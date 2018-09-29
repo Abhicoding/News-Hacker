@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {BrowserRouter, Route} from 'react-router-dom'
 
 import Header from '../Components/Header/Header.jsx'
 import Content from '../Components/Content/Content.jsx'
@@ -7,9 +8,9 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      new : [],
-      top: [],
-      best: [],
+      newstories : [],
+      topstories: [],
+      beststories: [],
       story : {
           "by" : "",
           "descendants" : 0,
@@ -34,17 +35,25 @@ class App extends Component {
       })
   }
 
+  getStoryIds (tab) {
+    fetch(` https://hacker-news.firebaseio.com/v0/${tab}.json?print=pretty`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(tab, data)
+        // this.setState({
+        //   tab: data
+        // })
+      })
+  }
+
   render() {
     return (
-      <div className="App">
-        <Header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <h1 className="App-title">Well to React</h1>
-        </Header>
-        <Content/>
-        <p className="App-intro">
-        </p>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Route path='/' component={Header}/>
+          <Route path="/topstories" component={Content} />
+        </div>
+      </BrowserRouter>
     );
   }
 }

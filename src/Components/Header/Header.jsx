@@ -14,6 +14,13 @@ export default class Header extends Component {
     this.onClickNav = this.onClickNav.bind(this)
 
   }
+
+  componentWillMount () {
+    if (this.props.location.pathname === '/') {
+      this.props.history.push('/topstories')
+    }
+  }
+
   onClickNav () {
     this.setState({
       isActive: !this.state.isActive
