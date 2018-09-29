@@ -1,0 +1,29 @@
+.navbar-brand {
+  color: #0E4749;
+  font-size: x-large;
+  font-weight: 700;
+}
+
+.navbar {
+  background: #79B791;
+  border: none;
+}
+
+.navbar-start > .navbar-item:hover {
+  background: #0E4749;
+  color: #FFFFFF;
+  height: 100%;
+}
+
+.navbar-start {
+  margin-left:2%;
+}
+
+.navbar-start > .navbar-item::after {
+    display: block;
+    content: attr(title);
+    font-weight: bold;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
