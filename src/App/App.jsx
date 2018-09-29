@@ -11,6 +11,9 @@ class App extends Component {
       newstories : [],
       topstories: [],
       beststories: [],
+      'newstoriesID': [],
+      'topstoriesID': [],
+      'beststoriesID': [],
       story : {
           "by" : "",
           "descendants" : 0,
@@ -22,31 +25,26 @@ class App extends Component {
           "type" : "",
           "url" : ""
       },
-      tab: ''
     }
-    this.getStoryIds = this.getStoryIds.bind(this)
+    // this.getStoryIds = this.getStoryIds.bind(this)
   }
   componentWillMount () {
-    fetch(`https://hacker-news.firebaseio.com/v0/item/8863.json?print=pretty`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        this.setState({
-          story: data
-        })
-      })
+    ['topstoriesID', 'beststoriesID', 'newstoriesID'].forEach(tab => {
+      this.getStoryIds(tab)
+    })
   }
 
   getStoryIds (tab) {
-    fetch(` https://hacker-news.firebaseio.com/v0/${tab}.json?print=pretty`)
+    return fetch(`https://hacker-news.firebaseio.com/v0/${tab.slice(0, -2)}.json?print=pretty`)
       .then(res => res.json())
       .then(data => {
-        console.log(tab, data)
-        this.setState({
-          tab: tab
-        })
+        var update = {}
+        update[tab] = data
+        this.setState({...update})
       })
   }
+
+  
 
   render() {
     return (
@@ -54,7 +52,7 @@ class App extends Component {
         <div className="App">
           <Route path='/'  render={props => <Header {...props} 
             getStoryIds={this.getStoryIds}/>} />
-          <Route path="/topstories" component={Pagecontent} />
+          <Route path="/" render={props => <Pagecontent {...props} data={this.state}/>} />
         </div>
       </BrowserRouter>
     );
