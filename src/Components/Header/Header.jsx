@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
+
 import {Navbar, NavbarBrand, NavbarBurger, 
   NavbarStart, NavbarEnd, NavbarItem, NavbarMenu, NavbarLink, 
   NavbarDivider, NavbarDropdown, Icon} from 'bloomer'
@@ -12,12 +14,13 @@ export default class Header extends Component {
       isActive: false
     }
     this.onClickNav = this.onClickNav.bind(this)
-
+    this.updateStories = this.updateStories.bind(this)
   }
 
   componentWillMount () {
     if (this.props.location.pathname === '/') {
       this.props.history.push('/topstories')
+      this.props.getStoryIds(this.props.location.pathname)
     }
   }
 
@@ -25,6 +28,10 @@ export default class Header extends Component {
     this.setState({
       isActive: !this.state.isActive
     })
+  }
+
+  updateStories () {
+    this.props.getStoryIds(this.props.location.pathname)
   }
 
   render () {
@@ -39,13 +46,19 @@ export default class Header extends Component {
             NH
           </NavbarItem>
           <NavbarBurger isActive={this.state.isActive} 
-            onClick={() => this.onClickNav} />
+            onClick={this.onClickNav} />
       </NavbarBrand>
       <NavbarMenu isActive={this.state.isActive} onClick={this.onClickNav}>
         <NavbarStart>
-          <NavbarItem href='#/' title='New'>New</NavbarItem>
-          <NavbarItem href='#/' title='Top'>Top</NavbarItem>
-          <NavbarItem href='#/' title='Best'>Best</NavbarItem>
+          <NavbarItem title='New'>
+            <Link to='newstories' onClick={this.updateStories}>New</Link>
+          </NavbarItem>
+          <NavbarItem title='Top'>
+            <Link to='topstories' onClick={this.updateStories}>Top</Link>
+          </NavbarItem>
+          <NavbarItem title='Best'>
+            <Link to='beststories' onClick={this.updateStories}>Best</Link>
+          </NavbarItem>
           <NavbarItem hasDropdown isHoverable>
             <NavbarLink href='#/documentation'>Documentation</NavbarLink>
             <NavbarDropdown>
