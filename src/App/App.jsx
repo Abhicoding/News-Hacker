@@ -15,68 +15,98 @@ class App extends Component {
       newstoriesID: [],
       topstoriesID: [],
       beststoriesID: [],
-      newstoriespage: 1,
-      topstoriespage: 1,
-      beststoriespage: 1,
-      story : {
-          "by" : "",
-          "descendants" : 0,
-          "id" : 0,
-          "kids" : [],
-          "score" : 0,
-          "time" : 0,
-          "title" : "",
-          "type" : "",
-          "url" : ""
+      newstoriespage: {
+        currentpage: 1,
+        maxpage: 0
       },
+      topstoriespage: {
+        currentpage: 1,
+        maxpage: 0
+      },
+      beststoriespage: {
+        currentpage: 1,
+        maxpage: 0
+      }
     }
-    // this.getStoryIds = this.getStoryIds.bind(this)
+    this.getStoryIds = this.getStoryIds.bind(this)
+    this.getStories = this.getStories.bind(this)
+    this.pageChange = this.pageChange.bind(this)
   }
 
   componentWillMount () {
-    ['topstoriesID', 'beststoriesID', 'newstoriesID'].forEach(tab => {
-      this.getStoryIds(tab)
+    this.initialize()
+  }
+
+  async initialize () {
+    var initial = [];
+    var final = {};
+    var iter = ['topstoriesID', 'beststoriesID', 'newstoriesID']
+    
+    iter.forEach(tab => {
+      let temp = this.getStoryIds(tab)
+      initial.push(temp)
     })
-  }
 
-  getStoryIds (tab) {
-    return fetch(`https://hacker-news.firebaseio.com/v0/${tab.slice(0, -2)}.json?print=pretty`)
-      .then(res => res.json())
-      .then(data => {
-        var update = {}
-        update[tab] = data
-        this.setState({...update}, () => this.getStories(tab))
-      })
-  }
+    initial = await Promise.all(initial)
+    
+    iter.forEach((tab, i) => {
+      final[tab] = initial[i]
+      final[`${tab.slice(0, -2)}page`] = {
+        currentpage: 1,
+        maxpage: Math.ceil(initial[i].length/this.state.showcount)
+      }
+    })
+    initial = []
 
-  async getStories (tabName) {
-    var page = this.state[`${tabName.slice(0, -2)}page`]
-    var arr = this.state[tabName]
-      .slice(page-1, page * this.state.showcount)
-      .map(id => fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?`))
-    var promiseArr = await Promise.all(arr.map(p => p.catch(e => e)))
-    var dataArr = await Promise.all(promiseArr.map(x => x.json()))
-    this.setStories(tabName.slice(0, -2), dataArr)
-  }
+    iter.forEach((tab, i) => {
+      var temp = this.getStories(tab, 1, final[tab])
+      initial.push(temp)  
+    })
+     initial = await Promise.all(initial)
+    
+    iter.forEach((tab, i) => {
+      final[tab.slice(0, -2)] = initial[i]
+    })
 
-  setStories (tabName, storyArr) {
-    var prevArr = this.state[tabName]
-    var newArr = [...prevArr, ...storyArr]
-    var update = {[tabName]: newArr}
-    //console.log(update)
     this.setState({
-      ...update
+      ...final
     })
+  }
+
+  async getStoryIds (tab) {
+    var req = await fetch(`https://hacker-news.firebaseio.com/v0/${tab.slice(0, -2)}.json?print=pretty`)
+    return req.json()
+  }
+
+  async getStories (tab, page, arr) {
+    if (arr === undefined){
+      arr = this.state[tab]
+    }
+    arr = arr.slice(page-1, page * this.state.showcount)
+       .map(id => fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?`))
+    var promiseArr = await Promise.all(arr.map(p => p.catch(e => e)))
+    return await Promise.all(promiseArr.map(x => x.json()))
+  }
+
+  pageChange(tabName, change) {
+    console.log(`${tabName}page`)
+    // this.setState({
+    //   [`${tabName}page`]: this.state[`${tabName}page`]++
+    // })
   }
 
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Route path='/'  render={props => <Header {...props} 
+          
+          <Route path="/"  render={props => <Header {...props} 
             getStoryIds={this.getStoryIds}/>} />
+          
           <Route path="/" render={props => <Pagecontent {...props} 
-            data={this.state}/>} />
+            data={this.state} getStories={this.getStories} 
+            pageChange={this.pageChange}/>} />
+        
         </div>
       </BrowserRouter>
     );

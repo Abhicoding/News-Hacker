@@ -1,18 +1,22 @@
 import React, {Component} from 'react'
-
-import {Box} from 'bloomer'
-
+import './pagecontent.css'
+import Storybox from '../Storybox/Storybox.jsx'
+import Paginationfooter from '../Paginationfooter/Paginationfooter.jsx'
 export default class Pagecontent extends Component {
-  constructor (props) {
-    super()
-    this.state = {
-      show: props.data[props.location.pathname.slice(1)]
-    }
-  }
   render () {
-    // console.log(this.state.show, 'content')
-    // console.log(this.props.location.pathname.slice(1), 'content')
+    var tab = this.props.location.pathname.slice(1)
+    var data = this.props.data
+    var pageinfo = this.props.data[`${tab}page`]
+    var item = data[tab].map(story => <Storybox key={story.id} {...story}/>)
+    pageinfo.tabName = tab
     return (
-      <Box>Content inside the box</Box>
+      <div className='pagecontent'>
+        {item}
+        <div className='paginationfooter'>
+          {item.length < 5 ?
+            null: <Paginationfooter {...pageinfo}
+            pageChange={this.props.pageChange} />}
+        </div>
+      </div>
   )}
 }

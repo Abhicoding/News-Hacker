@@ -51,13 +51,13 @@ export default class Header extends Component {
       <NavbarMenu isActive={this.state.isActive} onClick={this.onClickNav}>
         <NavbarStart>
           <NavbarItem title='New'>
-            <Link to='newstories' onClick={this.updateStories}>New</Link>
+            <Link to='newstories'>New</Link>
           </NavbarItem>
           <NavbarItem title='Top'>
-            <Link to='topstories' onClick={this.updateStories}>Top</Link>
+            <Link to='topstories' >Top</Link>
           </NavbarItem>
           <NavbarItem title='Best'>
-            <Link to='beststories' onClick={this.updateStories}>Best</Link>
+            <Link to='beststories'>Best</Link>
           </NavbarItem>
           <NavbarItem hasDropdown isHoverable>
             <NavbarLink href='#/documentation'>Documentation</NavbarLink>
@@ -71,7 +71,7 @@ export default class Header extends Component {
         </NavbarStart>
         <NavbarEnd>
           <NavbarItem href="https://github.com/AlgusDark/bloomer" isHidden='touch'>
-            <Icon className='fa fa-github' />
+            <Icon className='fab fa-github-alt' isSize='large'/>
           </NavbarItem>
         </NavbarEnd>
       </NavbarMenu>
