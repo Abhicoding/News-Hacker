@@ -34,6 +34,12 @@ export default class Header extends Component {
     this.props.getStoryIds(this.props.location.pathname)
   }
 
+  handleRedirect (tab) {
+    console.log(tab, this.props)
+    this.props.tabswitch(tab)
+    // this.props.history.push(`/${tab}`)
+  }
+
   render () {
     return (
     <div>
@@ -51,13 +57,13 @@ export default class Header extends Component {
       <NavbarMenu isActive={this.state.isActive} onClick={this.onClickNav}>
         <NavbarStart>
           <NavbarItem title='New'>
-            <Link to='newstories'>New</Link>
+            <Link to='/newstories' onClick={() => this.handleRedirect('newstories')}>New</Link>
           </NavbarItem>
           <NavbarItem title='Top'>
-            <Link to='topstories' >Top</Link>
+            <Link to='/topstories' onClick={() => this.handleRedirect('topstories')}>Top</Link>
           </NavbarItem>
           <NavbarItem title='Best'>
-            <Link to='beststories'>Best</Link>
+            <Link to='/beststories' onClick={() => this.handleRedirect('beststories')}>Best</Link>
           </NavbarItem>
           <NavbarItem hasDropdown isHoverable>
             <NavbarLink href='#/documentation'>Documentation</NavbarLink>

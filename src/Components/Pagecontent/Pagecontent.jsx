@@ -7,7 +7,8 @@ export default class Pagecontent extends Component {
     var tab = this.props.location.pathname.slice(1)
     var data = this.props.data
     var pageinfo = this.props.data[`${tab}page`]
-    var item = data[tab].map(story => <Storybox key={story.id} {...story}/>)
+    if (data.show === undefined) return null
+    var item = data.show.map(story => <Storybox key={story.id} {...story}/>)
     pageinfo.tabName = tab
     return (
       <div className='pagecontent'>

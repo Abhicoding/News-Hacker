@@ -8,8 +8,7 @@ export default class Paginationfooter extends Component{
   }
 
   handlePage (page) {
-    console.log(page)
-    // this.props.pageChange(this.props.tabName, 'up')
+    this.props.pageChange(this.props.tabName, page)
   }
   
   render () {
