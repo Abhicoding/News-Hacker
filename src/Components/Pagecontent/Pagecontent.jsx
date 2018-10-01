@@ -6,6 +6,7 @@ import Login from '../Modal/Modal.jsx'
 
 export default class Pagecontent extends Component {
   render () {
+    
     var tab = this.props.location.pathname.slice(1)
     if (!['topstories', 'beststories', 'newstories'].includes(tab)) return null
     var data = this.props.data
@@ -15,9 +16,10 @@ export default class Pagecontent extends Component {
     if (stories === undefined) return null
     var item = stories.map(story => <Storybox key={story.id} {...story}/>)
     pageinfo.tab = tab
+    
     return (
       <div className='pagecontent'>
-        <Login modal={this.props.data.modal} />
+        <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}/>
         <div className='item'>{item}</div>
           <div className='paginationfooter'>
             {item.length < 5 ?

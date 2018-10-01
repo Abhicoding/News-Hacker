@@ -158,11 +158,11 @@ class App extends Component {
             tabswitch={this.tabswitch} toggleModal={this.toggleModal}/>} />
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 
-              data={this.state} />} />
+              data={this.state} toggleModal={this.toggleModal}/>} />
           
             <Route path="/" render={props => <Pagecontent {...props} 
               data={this.state} getStories={this.getStories} 
-              pageChange={this.pageChange}/>} />
+              pageChange={this.pageChange} toggleModal={this.toggleModal}/>} />
           </Switch>
         </div>
       </BrowserRouter>

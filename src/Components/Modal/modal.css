@@ -1,3 +1,22 @@
-.login {
-  z-index: 2;
+button.submit {
+  background: white;
+  color: #4CB944;
+  border-color: #4CB944;
+}
+
+button.submit:hover {
+  background: #4CB944;;
+  color: white;
+  border-color: #4CB944;
+}
+
+button.cancel {
+  background: white;
+  color: #DB504A;
+  border-color: #DB504A;
+}
+button.cancel:hover {
+  background-color: #DB504A;
+  color: white;
+  border-color: #DB504A;
 }
