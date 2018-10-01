@@ -6,11 +6,12 @@ export default class Pagecontent extends Component {
   render () {
     var tab = this.props.location.pathname.slice(1)
     var data = this.props.data
-    var pageinfo = this.props.data[`${tab}page`]
+    var pageinfo = {...this.props.data[`${tab}page`]}
     if (pageinfo === undefined) return null
     var stories = data[tab][pageinfo.currentpage - 1]
     if (stories === undefined) return null
     var item = stories.map(story => <Storybox key={story.id} {...story}/>)
+    pageinfo.tab = tab
     return (
       <div className='pagecontent'>
         <div className='item'>{item}</div>

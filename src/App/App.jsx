@@ -27,7 +27,6 @@ class App extends Component {
         currentpage: 1,
         maxpage: 0
       },
-      show: []
     }
     this.getStoryIds = this.getStoryIds.bind(this)
     this.getStories = this.getStories.bind(this)
@@ -97,7 +96,7 @@ class App extends Component {
   }
 
   async managePageStory (tab, pageNo) {
-    
+    //console.log(tab, pageNo, 'this was called')
     var start = (pageNo-1)*this.state.showcount
     var end = pageNo *this.state.showcount
     var tocheck = this.state[tab]
@@ -115,12 +114,14 @@ class App extends Component {
     newArr[page-1] = arr
     this.setState({
       [tab]: [...newArr],
-      show: [...arr]
+      [`${tab}page`]: {
+        ...this.state[`${tab}page`],
+        currentpage: page
+      }
     })
   }
 
   tabswitch (tab) {
-    console.log('this ran ', tab, this.state[tab])
     this.setState({
       show: this.state[tab][this.state[`${tab}page`].currentpage - 1]
     })
@@ -129,24 +130,16 @@ class App extends Component {
   pageChange(tab, page) {
     if (this.state[tab][page -1] !== undefined) {
       return this.setState({
-        show: this.state[tab][page],
         [`${tab}page`]: {
           ...this.state[`${tab}page`],
           currentpage: page
         }
       })
     }
-    console.log(tab, page)
-    console.log(this.state[`${tab}page`].currentpage)
-    // this.setState({
-    //   this.state[`${tab}page`].currentpage: this.state[`${tabName}page`]++
-    // })
     return this.managePageStory(tab, page)
   }
 
   render() {
-    // this.managePageStory('topstories', 4)
-    // this.managePageStory('topstories', 5)
     return (
       <BrowserRouter>
         <div className="App">
