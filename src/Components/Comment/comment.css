@@ -17,6 +17,11 @@
   white-space: pre-wrap;
 }
 
+pre a {
+  color: blue;
+  text-decoration: underline
+}
+
 .comment {
   margin-left: 10%;
 }

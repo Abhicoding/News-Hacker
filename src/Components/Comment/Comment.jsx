@@ -46,9 +46,7 @@ export default class Comment extends Component {
               </LevelLeft>
           </Level>
           <Content className='text'>
-              <pre>
-                {text}
-              </pre>
+              <pre dangerouslySetInnerHTML={{__html: text}} />
           </Content>
         {item}
       </MediaContent>
