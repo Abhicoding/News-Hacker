@@ -34,9 +34,7 @@ export default class Header extends Component {
   }
 
   handleRedirect (tab) {
-    console.log(tab, this.props)
     this.props.tabswitch(tab)
-    // this.props.history.push(`/${tab}`)
   }
 
   render () {
@@ -64,7 +62,7 @@ export default class Header extends Component {
           <NavbarItem title='Best'>
             <Link to='/beststories' onClick={() => this.handleRedirect('beststories')}>Best</Link>
           </NavbarItem>
-          <NavbarItem hasDropdown isHoverable>
+          {/* <NavbarItem hasDropdown isHoverable>
             <NavbarLink href='#/documentation'>Documentation</NavbarLink>
             <NavbarDropdown>
               <NavbarItem href='#/'>One A</NavbarItem>
@@ -72,7 +70,7 @@ export default class Header extends Component {
               <NavbarDivider />
               <NavbarItem href='#/'>Two A</NavbarItem>
             </NavbarDropdown>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarStart>
         <NavbarEnd>
           <NavbarItem href="https://github.com/AlgusDark/bloomer" isHidden='touch'>

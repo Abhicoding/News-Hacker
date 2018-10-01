@@ -1,0 +1,22 @@
+.by {
+  font-size: 0.8rem;
+  color: #0E4749;
+}
+
+.descendants {
+  font-size: 1rem;
+  color: #0E4749;
+}
+
+.timeago {
+  font-size: 0.8rem;
+  color: #7D7D7D;
+}
+
+.text>pre{
+  white-space: pre-wrap;
+}
+
+.comment {
+  margin-left: 10%;
+}

@@ -31,8 +31,10 @@ export default function Storybox ({id, by, score, time, title, descendants, url}
               <LevelItem className='by' href='#'>
                 <p>by<strong>{` ${by}`}</strong></p>
               </LevelItem>
-              <LevelItem className='descendants' href='#' issize='small'>
-                <p>{`${descendants} comments`}</p>
+              <LevelItem className='descendants' issize='small'>
+                <Link to={`/story/${id}`}>
+                  <p>{`${descendants} comments`}</p>
+                </Link>
               </LevelItem>
               <LevelItem className='timeago' href='#'>
                 <i>{ta.ago(new Date() - time)}</i>

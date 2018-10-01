@@ -5,6 +5,8 @@ import Paginationfooter from '../Paginationfooter/Paginationfooter.jsx'
 export default class Pagecontent extends Component {
   render () {
     var tab = this.props.location.pathname.slice(1)
+    // console.log(tab in ['topstories', 'beststories', 'newstories'])
+    if (!['topstories', 'beststories', 'newstories'].includes(tab)) return null
     var data = this.props.data
     var pageinfo = {...this.props.data[`${tab}page`]}
     if (pageinfo === undefined) return null
