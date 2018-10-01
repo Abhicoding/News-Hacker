@@ -20,7 +20,6 @@ export default class Header extends Component {
   componentWillMount () {
     if (this.props.location.pathname === '/') {
       this.props.history.push('/topstories')
-      this.props.getStoryIds(this.props.location.pathname)
     }
   }
 

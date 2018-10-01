@@ -97,17 +97,7 @@ class App extends Component {
   }
 
   async managePageStory (tab, pageNo) {
-    if (pageNo === 1 ) return
-    if (this.state[tab][pageNo -1] !== undefined) {
-      this.setState({
-        show: this.state[tab][pageNo],
-        [`${tab}page`]: {
-          ...this.state[`${tab}page`],
-          currentpage: pageNo
-        }
-      })
-      return
-    }
+    
     var start = (pageNo-1)*this.state.showcount
     var end = pageNo *this.state.showcount
     var tocheck = this.state[tab]
@@ -130,17 +120,28 @@ class App extends Component {
   }
 
   tabswitch (tab) {
+    console.log('this ran ', tab, this.state[tab])
     this.setState({
       show: this.state[tab][this.state[`${tab}page`].currentpage - 1]
     })
   }
 
   pageChange(tab, page) {
+    if (this.state[tab][page -1] !== undefined) {
+      return this.setState({
+        show: this.state[tab][page],
+        [`${tab}page`]: {
+          ...this.state[`${tab}page`],
+          currentpage: page
+        }
+      })
+    }
     console.log(tab, page)
+    console.log(this.state[`${tab}page`].currentpage)
     // this.setState({
-    //   [`${tabName}page`]: this.state[`${tabName}page`]++
+    //   this.state[`${tab}page`].currentpage: this.state[`${tabName}page`]++
     // })
-    // this.managePageStory(tab, page)
+    return this.managePageStory(tab, page)
   }
 
   render() {

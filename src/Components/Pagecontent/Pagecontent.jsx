@@ -7,12 +7,13 @@ export default class Pagecontent extends Component {
     var tab = this.props.location.pathname.slice(1)
     var data = this.props.data
     var pageinfo = this.props.data[`${tab}page`]
-    if (data.show === undefined) return null
-    var item = data.show.map(story => <Storybox key={story.id} {...story}/>)
-    pageinfo.tabName = tab
+    if (pageinfo === undefined) return null
+    var stories = data[tab][pageinfo.currentpage - 1]
+    if (stories === undefined) return null
+    var item = stories.map(story => <Storybox key={story.id} {...story}/>)
     return (
       <div className='pagecontent'>
-        {item}
+        <div className='item'>{item}</div>
         <div className='paginationfooter'>
           {item.length < 5 ?
             null: <Paginationfooter {...pageinfo}
