@@ -1,0 +1,28 @@
+span.urlname {
+  font-size: 0.8rem;
+  color: #7D7D7D;
+}
+
+span.title {
+  font-size: 1rem;
+  color: #0E4749;
+}
+
+.score strong {
+  color: #79B791;
+}
+
+.by {
+  font-size: 0.8rem;
+  color: #0E4749;
+}
+
+.descendants {
+  font-size: 0.8rem;
+  color: #0E4749;
+}
+
+.timeago {
+  font-size: 0.8rem;
+  color: #7D7D7D;
+}

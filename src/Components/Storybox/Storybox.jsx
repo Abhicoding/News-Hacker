@@ -1,26 +1,40 @@
 import React from 'react'
 import ta from 'time-ago'
+import {Link} from 'react-router-dom'
 
 import {Media, MediaContent, MediaLeft, MediaRight, LevelItem, Icon, Content, Level, LevelLeft} from 'bloomer'
+import './storybox.css'
 
-export default function Storybox ({by, score, time, title, descendants}) {
+export default function Storybox ({id, by, score, time, title, descendants, url}) {
+  try { 
+    var link = new URL(url)
+  } catch (e) {
+    link = ''
+  }
   return (<Media>
     <MediaLeft>
     </MediaLeft>
     <MediaContent>
         <Content>
-            <p>{title}</p>
+            <p>
+              <Link to={`/story/${id}`}>
+                <span className='title'>{`${title} `}</span>
+              </Link>
+              <a href={link.href}>
+                <span className='urlname'>{link ? `(${link.hostname})`: ""}</span>
+              </a>
+            </p>
         </Content>
         <Level isMobile>
             <LevelLeft>
-              <LevelItem><strong>{score}</strong></LevelItem>
-              <LevelItem href='#'>
+              <LevelItem className='score'><strong>{score}</strong></LevelItem>
+              <LevelItem className='by' href='#'>
                 <p>by<strong>{` ${by}`}</strong></p>
               </LevelItem>
-              <LevelItem href='#' issize='small'>
+              <LevelItem className='descendants' href='#' issize='small'>
                 <p>{`${descendants} comments`}</p>
               </LevelItem>
-              <LevelItem href='#'>
+              <LevelItem className='timeago' href='#'>
                 <i>{ta.ago(new Date() - time)}</i>
               </LevelItem>
             </LevelLeft>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {BrowserRouter, Route} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
+import Storypage from '../Components/Storypage/Storypage.jsx'
 
 class App extends Component {
   constructor () {
@@ -147,11 +148,14 @@ class App extends Component {
           <Route path="/"  render={props => <Header {...props} 
             getStoryIds={this.getStoryIds} pageChange={this.pageChange}
             tabswitch={this.tabswitch}/>} />
+          <Switch>
+            <Route path="/story/:id" render={props => <Storypage {...props} 
+              data={this.state} />} />
           
-          <Route path="/" render={props => <Pagecontent {...props} 
-            data={this.state} getStories={this.getStories} 
-            pageChange={this.pageChange}/>} />
-        
+            <Route path="/" render={props => <Pagecontent {...props} 
+              data={this.state} getStories={this.getStories} 
+              pageChange={this.pageChange}/>} />
+          </Switch>
         </div>
       </BrowserRouter>
     );
