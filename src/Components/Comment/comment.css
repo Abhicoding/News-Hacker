@@ -25,3 +25,7 @@ pre a {
 .comment {
   margin-left: 10%;
 }
+
+.media .media {
+  border-top: none
+}

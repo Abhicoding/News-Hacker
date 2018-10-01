@@ -28,11 +28,13 @@ class App extends Component {
         currentpage: 1,
         maxpage: 0
       },
+      modal: false
     }
     this.getStoryIds = this.getStoryIds.bind(this)
     this.getStories = this.getStories.bind(this)
     this.pageChange = this.pageChange.bind(this)
     this.tabswitch = this.tabswitch.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
   }
 
   componentWillMount () {
@@ -140,6 +142,12 @@ class App extends Component {
     return this.managePageStory(tab, page)
   }
 
+  toggleModal () {
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -147,7 +155,7 @@ class App extends Component {
           
           <Route path="/"  render={props => <Header {...props} 
             getStoryIds={this.getStoryIds} pageChange={this.pageChange}
-            tabswitch={this.tabswitch}/>} />
+            tabswitch={this.tabswitch} toggleModal={this.toggleModal}/>} />
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 
               data={this.state} />} />

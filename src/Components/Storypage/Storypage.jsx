@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 import Storybox from '../Storybox/Storybox';
 import Comment from '../Comment/Comment'
+import Modal from '../Modal/Modal'
 
 export default class Storypage extends Component{
   constructor () {
@@ -51,7 +52,8 @@ export default class Storypage extends Component{
       .map(x => <Comment key={x.id} getChildren = {this.getChildren} {...x} />)
     return (
       <div className='storypage'>
-        <Storybox {...this.state.user}/>
+        {this.props.modal ? <Modal/> : null} 
+        <Storybox className='storypagetitle'  {...this.state.user}/>
         {item}
       </div>
     )

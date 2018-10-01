@@ -27,3 +27,15 @@
     overflow: hidden;
     visibility: hidden;
 }
+
+.button:hover {
+  background: #0E4749;
+  color: #FFFFFF;
+  border: none;
+}
+
+.button {
+  color: #0E4749;
+  background: #79B791;
+  border-color: #0E4749;
+}

@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import './pagecontent.css'
 import Storybox from '../Storybox/Storybox.jsx'
 import Paginationfooter from '../Paginationfooter/Paginationfooter.jsx'
+import Login from '../Modal/Modal.jsx'
+
 export default class Pagecontent extends Component {
   render () {
     var tab = this.props.location.pathname.slice(1)
-    // console.log(tab in ['topstories', 'beststories', 'newstories'])
     if (!['topstories', 'beststories', 'newstories'].includes(tab)) return null
     var data = this.props.data
     var pageinfo = {...this.props.data[`${tab}page`]}
@@ -16,12 +17,13 @@ export default class Pagecontent extends Component {
     pageinfo.tab = tab
     return (
       <div className='pagecontent'>
+        <Login modal={this.props.data.modal} />
         <div className='item'>{item}</div>
-        <div className='paginationfooter'>
-          {item.length < 5 ?
-            null: <Paginationfooter {...pageinfo}
-            pageChange={this.props.pageChange} />}
-        </div>
+          <div className='paginationfooter'>
+            {item.length < 5 ?
+              null: <Paginationfooter {...pageinfo}
+              pageChange={this.props.pageChange} />}
+          </div>
       </div>
   )}
 }

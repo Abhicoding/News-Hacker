@@ -5,7 +5,7 @@ import {Navbar, NavbarBrand, NavbarBurger,
   NavbarStart, NavbarEnd, NavbarItem, NavbarMenu, NavbarLink, 
   NavbarDivider, NavbarDropdown, Icon} from 'bloomer'
 import './header.css'
-
+import { Button } from 'bloomer/lib/elements/Button';
 
 export default class Header extends Component {
   constructor() {
@@ -15,6 +15,7 @@ export default class Header extends Component {
     }
     this.onClickNav = this.onClickNav.bind(this)
     this.updateStories = this.updateStories.bind(this)
+    this.handleModal = this.handleModal.bind(this)
   }
 
   componentWillMount () {
@@ -37,9 +38,13 @@ export default class Header extends Component {
     this.props.tabswitch(tab)
   }
 
+  handleModal () {
+    this.props.toggleModal()
+  }
+
   render () {
     return (
-    <div>
+    <div className ='header'>
       <Navbar>
         <NavbarBrand className='navbar-brand'>
           <NavbarItem isHidden='mobile'>
@@ -62,19 +67,10 @@ export default class Header extends Component {
           <NavbarItem title='Best'>
             <Link to='/beststories' onClick={() => this.handleRedirect('beststories')}>Best</Link>
           </NavbarItem>
-          {/* <NavbarItem hasDropdown isHoverable>
-            <NavbarLink href='#/documentation'>Documentation</NavbarLink>
-            <NavbarDropdown>
-              <NavbarItem href='#/'>One A</NavbarItem>
-              <NavbarItem href='#/'>Two B</NavbarItem>
-              <NavbarDivider />
-              <NavbarItem href='#/'>Two A</NavbarItem>
-            </NavbarDropdown>
-          </NavbarItem> */}
         </NavbarStart>
         <NavbarEnd>
-          <NavbarItem href="https://github.com/AlgusDark/bloomer" isHidden='touch'>
-            <Icon className='fab fa-github-alt' isSize='large'/>
+          <NavbarItem className='login'>
+            <Button onClick={this.handleModal}>Login</Button>
           </NavbarItem>
         </NavbarEnd>
       </NavbarMenu>
