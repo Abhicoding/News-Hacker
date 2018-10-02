@@ -6,9 +6,8 @@ module.exports = {
 
   signup : async function signup (obj) {
     try {
-      if (obj.username.length < 6 ||obj.username.length> 16) {
-        throw new Error(`Bad username`)
-      }
+      if (obj.username.length < 6) throw new Error(`Username too small`)
+      if (obj.password.length < 6) throw new Error(`Password too small`)
       var validuser = await Redis.hexists('user', obj.username)
       if (validuser) throw new Error(`User already exists`)
       var salt = await Bcrypt.genSalt(10)

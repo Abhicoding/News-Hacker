@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
 import Storypage from '../Components/Storypage/Storypage.jsx'
+import Createpost from '../Components/Createpost/Createpost.jsx';
 
 class App extends Component {
   constructor () {
@@ -28,13 +29,17 @@ class App extends Component {
         currentpage: 1,
         maxpage: 0
       },
-      modal: false
+      modal: false,
+      loggedin: false,
+      user: ''
     }
     this.getStoryIds = this.getStoryIds.bind(this)
     this.getStories = this.getStories.bind(this)
     this.pageChange = this.pageChange.bind(this)
     this.tabswitch = this.tabswitch.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
+    this.onSignin = this.onSignin.bind(this)
+    this.onSignout = this.onSignout.bind(this)
   }
 
   componentWillMount () {
@@ -148,21 +153,42 @@ class App extends Component {
     })
   }
 
+  onSignin (loggedin, user) {
+    this.setState({
+      loggedin,
+      user
+    })
+  }
+
+  onSignout () {
+    this.setState({
+      loggedin: false,
+      user: ''
+    })
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
           
-          <Route path="/"  render={props => <Header {...props} 
+          <Route path="/"  render={props => <Header {...props} data={this.state}
             getStoryIds={this.getStoryIds} pageChange={this.pageChange}
             tabswitch={this.tabswitch} toggleModal={this.toggleModal}/>} />
+          
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 
-              data={this.state} toggleModal={this.toggleModal}/>} />
+              data={this.state} toggleModal={this.toggleModal} 
+              onSignin={this.onSignin} onSignout={this.onSignout}/>} />
+
+            <Route path="/createpost" render={props => <Createpost {...props} 
+              data={this.state} toggleModal={this.toggleModal} 
+              onSignin={this.onSignin} onSignout={this.onSignout}/>} />
           
             <Route path="/" render={props => <Pagecontent {...props} 
               data={this.state} getStories={this.getStories} 
-              pageChange={this.pageChange} toggleModal={this.toggleModal}/>} />
+              pageChange={this.pageChange} toggleModal={this.toggleModal}
+              onSignin={this.onSignin} onSignout={this.onSignout} />} />
           </Switch>
         </div>
       </BrowserRouter>

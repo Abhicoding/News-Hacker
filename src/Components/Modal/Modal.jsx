@@ -13,10 +13,18 @@ export default class Login extends Component {
     super ()
     this.state = {
       tab : true,
+      help: {
+        tab: '',
+        field: '',
+        message: ''
+      }
     }
     this.toggleForm = this.toggleForm.bind(this)
     this.closeForm = this.closeForm.bind(this)
-
+    this.submitForm = this.submitForm.bind(this)
+    this.sethelper = this.sethelper.bind(this)
+    this.validateForm = this.validateForm.bind(this)
+    this.resethelper = this.resethelper.bind(this)
   }
 
   toggleForm () {
@@ -25,12 +33,62 @@ export default class Login extends Component {
     })
   }
 
+  sethelper (obj) {
+    console.log('HELPER CALLED', obj)
+    this.setState({
+      help: {...obj}
+    }, _ => setTimeout(() => this.resethelper(), 60000))
+  }
+  
+  resethelper () {
+    this.setState({
+      help: {
+        tab: '',
+        field: '',
+        message: ''
+      }
+    })
+  }
+
+  validateForm (formdata, formtype) {
+    if (formdata.username.length < 6) {
+      return this.sethelper({
+        tab: formtype,
+        field: 'username',
+        message: 'username too small'
+      })
+    }
+    if (formdata.password.length < 6) {
+      return this.sethelper({
+        tab: formtype,
+        field: 'password1',
+        message: 'password too small'
+      })
+    }
+    return this.submitForm(formdata, formtype)
+  }
+
+  submitForm (formdata, formtype) {
+    var url = `/api/user/${formtype}`
+    // fetch (url, formdata)
+    //   .then(res => console.log(res.json))
+    console.log(formdata, url)
+    this.props.onSignin(true, formdata.username)
+    this.closeForm()
+  }
+
   closeForm () {
+    this.setState({
+      help: {
+        tab: '',
+        field: '',
+        message: ''
+      }
+    })
     this.props.toggleModal()
   }
 
   render () {
-    // console.log(this.props, 'modal props')
     return ( 
     <Modal className='login' isActive ={this.props.modal}>
       <ModalBackground />
@@ -52,19 +110,12 @@ export default class Login extends Component {
                 </TabList>
               </Tabs>
             </ModalCardTitle>              
-            <Delete onClick={this.closeForm}/>
           </ModalCardHeader>
           <ModalCardBody>
-            <Loginform boolean={this.state.tab}/>
-            <Signupform boolean={!this.state.tab}/>
-            <Field isGrouped>
-              <Control>
-                <Button className='submit'>Submit</Button>
-              </Control>
-              <Control>
-                <Button className='cancel' onClick={this.closeForm}>Cancel</Button>
-              </Control>
-            </Field>
+            <Loginform {...this.state} validateForm={this.validateForm} 
+              closeForm={this.closeForm} />
+            <Signupform {...this.state} validateForm={this.validateForm} 
+              closeForm={this.closeForm} sethelper={this.sethelper}/>
           </ModalCardBody>
         </ModalCard>
       </Modal>

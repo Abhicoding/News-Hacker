@@ -16,6 +16,7 @@ export default class Header extends Component {
     this.onClickNav = this.onClickNav.bind(this)
     this.updateStories = this.updateStories.bind(this)
     this.handleModal = this.handleModal.bind(this)
+    this.handleLogout = this.handleLogout.bind(this)
   }
 
   componentWillMount () {
@@ -42,7 +43,12 @@ export default class Header extends Component {
     this.props.toggleModal()
   }
 
+  handleLogout () {
+    this.props.signout()
+  }
+
   render () {
+    console.log(this.props, 'Logged in status')
     return (
     <div className ='header'>
       <Navbar>
@@ -69,8 +75,19 @@ export default class Header extends Component {
           </NavbarItem>
         </NavbarStart>
         <NavbarEnd>
+          {this.props.data.loggedin 
+            ? <NavbarItem className='user'>{`Hi, ${this.props.data.user}`}</NavbarItem> 
+            : null}
+          {this.props.data.loggedin 
+            ? <NavbarItem className='newpost'>
+              <Button className='newpost-button'><Link to='/createpost'>Create Post</Link></Button></NavbarItem>
+            : null}
           <NavbarItem className='login'>
-            <Button onClick={this.handleModal}>Login</Button>
+            {!this.props.data.loggedin
+              ? <Button className='login-button'
+                onClick={this.handleModal} >Login</Button> 
+              : <Button className= 'logout-button' 
+                onClick={this.handleLogout} >Logout</Button>}
           </NavbarItem>
         </NavbarEnd>
       </NavbarMenu>

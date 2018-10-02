@@ -52,7 +52,8 @@ export default class Storypage extends Component{
       .map(x => <Comment key={x.id} getChildren = {this.getChildren} {...x} />)
     return (
       <div className='storypage'>
-        <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}/>
+        <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
+          onSignin={this.props.onSignin} onSignout={this.props.onSignout} />
         <Storybox className='storypagetitle'  {...this.state.user}/>
         {item}
       </div>

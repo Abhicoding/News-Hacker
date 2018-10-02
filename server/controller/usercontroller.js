@@ -10,7 +10,7 @@ module.exports = {
     var check = await model.login(req.body)
     if (check === true) {
       req.session.username = req.body.username
-      return res.status(200).send(req.body.username)
+      return res.status(200).json(req.body.username)
     }
     if (typeof check === "object") return res.status(401).send(`Error: ${check.message}`)
     return res.status(401).send('Error: Oops! something went wrong')

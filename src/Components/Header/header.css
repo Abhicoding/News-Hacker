@@ -28,14 +28,38 @@
     visibility: hidden;
 }
 
-.button:hover {
+.button.login-button:hover {
   background: #0E4749;
   color: #FFFFFF;
   border: none;
 }
 
-.button {
+.button.login-button {
   color: #0E4749;
   background: #79B791;
+  border-color: #0E4749;
+}
+
+.button.logout-button {
+  color: #0E4749;
+  background: #79B791;
+  border-color: #79B791;
+}
+
+.button.logout-button:hover {
+  color: white;
+  background: #0E4749;
+  border-color: white;
+}
+
+.button.newpost-button {
+  color: #0E4749;
+  background: #17BEBB;
+  border-color: #17BEBB;
+}
+
+.button.newpost-button:hover {
+  color: #0E4749;
+  background: #17BEBB;
   border-color: #0E4749;
 }
