@@ -3,10 +3,17 @@ const Bcrypt = require('./bcrypt.js')
 
 
 module.exports = {
+
   signup : async function signup (obj) {
-    var salt = await Bcrypt.genSalt(10)
-    obj.password = await Bcrypt.hash(obj.password.toString(), salt)
-    return Redis.hmset('user', obj.username, JSON.stringify(obj))
+    try {
+      var validuser = await Redis.hexists('user', obj.username)
+      if (validuser) throw new Error(`User already exists`)
+      var salt = await Bcrypt.genSalt(10)
+      obj.password = await Bcrypt.hash(obj.password.toString(), salt)
+      return await Redis.hmset('user', obj.username, obj)
+    } catch (e) {
+      return e
+    }
   },
 
   login : async function login (obj) {
