@@ -14,15 +14,18 @@ module.exports = {
   },
 
   postStories : async function postStories (req, res) {
-    var status = await model.savestory(req.body)
-    console.log(status, 'got status')
-    if (status === 'OK') return res.status(201).send('success')
+    if (req.session.username === req.body.by) {
+      var status = await model.savestory(req.body)
+      if (status === 'OK') return res.status(201).send('success')
+    }
     return res.status(400).send('failed')
   },
 
   upvoteStory : async function upvoteStory (req, res) {
-    if (!(typeof await model.upvote(req.body) === 'object')) {
-      return res.status(200).send('success')
+    if (req.session.username === req.body.by) {
+      if (!(typeof await model.upvote(req.body) === 'object')) {
+        return res.status(200).send('success')
+      }
     }
     return res.status(400).send('failed')
   },

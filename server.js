@@ -16,6 +16,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }))
+
 app.use(compression())
 app.use(bodyParser.json())
 app.use(morgan('dev'))
