@@ -1,8 +1,11 @@
 const router = require('express').Router()
 const controller = require('../controller/storycontroller')
 
-router.get('/allstories', controller.getAllStories)
+router.get('/allstoryids', controller.getAllStoriesIDs)
+router.get('/get/:id', controller.getStorybyID)
 router.get('/v0/:tabname', controller.getHNStories)
-router.post('/post:id', controller.postStories)
+router.post('/poststory', controller.postStories)
+router.post('/upvote', controller.upvoteStory)
+
 
 module.exports = router

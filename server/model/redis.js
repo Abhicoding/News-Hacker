@@ -20,10 +20,27 @@ client.on('connect', function () {
 })
 //}
 
-const hmset = promisify(client.hmset).bind(client)
+const hset = promisify(client.hset).bind(client)
 const hexists = promisify(client.hexists).bind(client)
-const hmget = promisify(client.hmget).bind(client)
+const hget = promisify(client.hget).bind(client)
+// const hgetall = promisify(client.hgetall).bind(client)
+const lrange = promisify(client.lrange).bind(client)
+const lpush = promisify(client.lpush).bind(client)
+const zincrby = promisify(client.zincrby).bind(client)
+const zscore = promisify(client.zscore).bind(client)
+// const multi = promisify(client.multi).bind(client)
+// const exec = promisify(client.exec).bind(client)
 
 module.exports = {
-  hmset, hexists, hmget,client
+  hset, 
+  hexists, 
+  hget,
+  // hgetall,
+  lrange,
+  lpush,
+  zincrby,
+  zscore,
+  // multi,
+  // exec,
+  client
 }
