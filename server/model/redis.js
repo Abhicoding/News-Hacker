@@ -12,13 +12,13 @@ if (process.env.REDISCLOUD_URL) {
   })
 }
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('logged here')
-client = redis.createClient()
-client.on('connect', function () {
-  console.log('connected Redis')
-  })
-}
+//if (process.env.NODE_ENV === 'development') {
+  //console.log('logged here')
+// client = redis.createClient()
+// client.on('connect', function () {
+//   console.log('connected Redis')
+// })
+//}
 
 const hset = promisify(client.hset).bind(client)
 const hexists = promisify(client.hexists).bind(client)
