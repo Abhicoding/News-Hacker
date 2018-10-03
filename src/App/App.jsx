@@ -4,7 +4,6 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
 import Storypage from '../Components/Storypage/Storypage.jsx'
-import Createpost from '../Components/Createpost/Createpost.jsx';
 import Axios from 'axios';
 
 class App extends Component {
@@ -15,9 +14,11 @@ class App extends Component {
       newstories : [],
       topstories: [],
       beststories: [],
+      nhstories: [],
       newstoriesID: [],
       topstoriesID: [],
       beststoriesID: [],
+      nhstoriesID: [],
       newstoriespage: {
         currentpage: 1,
         maxpage: 0
@@ -27,6 +28,10 @@ class App extends Component {
         maxpage: 0
       },
       beststoriespage: {
+        currentpage: 1,
+        maxpage: 0
+      },
+      nhstoriespage: {
         currentpage: 1,
         maxpage: 0
       },
@@ -41,6 +46,8 @@ class App extends Component {
     this.toggleModal = this.toggleModal.bind(this)
     this.onSignin = this.onSignin.bind(this)
     this.onSignout = this.onSignout.bind(this)
+    this.auth = this.auth.bind(this)
+    this.changeUserStatus = this.changeUserStatus.bind(this)
   }
 
   componentWillMount () {
@@ -50,8 +57,8 @@ class App extends Component {
   async initialize () {
     var initial = [];
     var result = {};
-    var iter = ['topstoriesID', 'beststoriesID', 'newstoriesID']
-    
+    var iter = ['topstoriesID', 'beststoriesID', 'newstoriesID', 'nhstoriesID']
+
     iter.forEach(tab => {
       let temp = this.getStoryIds(tab)
       initial.push(temp)
@@ -78,34 +85,48 @@ class App extends Component {
       result[tab.slice(0, -2)] = [initial[i]]
     })
 
+    var res = await this.auth()
+    if (res) {
+      result.user = res
+      result.loggedin = true
+    }
+
     this.setState({
       ...result, 
       show: [...result['topstories'][0]]
     })
   }
 
+  async auth () {
+    try {
+      return await Axios.get('/api/user/auth') 
+    } catch (e) {
+      return false
+    }
+  }
+
   async getStoryIds (tab) {
-    var req = await fetch(`https://hacker-news.firebaseio.com/v0/${tab.slice(0, -2)}.json?print=pretty`)
-    return req.json()
+    var req = await Axios.get(`/api/ext/storyids/${tab.slice(0, -2)}`)
+    return req.data
   }
 
   async getStories (tab, page, arr) { // Takes tab & page or arr
     if (!page && !arr) {
-      console.log('getStories is not properly called')
       return
     }
     
     if (arr === undefined) arr = this.state[tab]
     
     if (page !== null) arr = arr.slice(page-1, page * this.state.showcount)
-    
-    var arrProm = arr.map(id => fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?`))
+
+    var arrProm = arr.map(id => Axios.get(`/api/ext/story/${tab}/${id}`))
+
     var promiseArr = await Promise.all(arrProm.map(p => p.catch(e => e)))
-    return await Promise.all(promiseArr.map(x => x.json()))
+
+    return promiseArr.map(i => i.data)
   }
 
   async managePageStory (tab, pageNo) {
-    //console.log(tab, pageNo, 'this was called')
     var start = (pageNo-1)*this.state.showcount
     var end = pageNo *this.state.showcount
     var tocheck = this.state[tab]
@@ -113,7 +134,6 @@ class App extends Component {
     for (let i = start; i < end; i++) { // Good chance of dealing with a sparse array here
       if (!Boolean(tocheck[i])) toget.push(this.state[`${tab}ID`][i])
     }
-    // console.log(toget, 'loggin toget', pageNo, tab)
     var stories = await this.getStories(tab, null, toget)
     this.setPageStory(tab, pageNo, stories)
   }
@@ -161,16 +181,20 @@ class App extends Component {
     })
   }
 
-  async onSignout () {
-    try{
-      var res = await Axios.get('api/user/logout')
-    } catch (e) {
-      return  
-    }
+  changeUserStatus () {
     return this.setState({
       loggedin: false,
       user: ''
     })
+  }
+
+  async onSignout () {
+    try{
+      await Axios.get('api/user/logout')
+    } catch (e) {
+      return  
+    }
+    return this.changeUserStatus()
   }
 
   render() {
@@ -184,10 +208,6 @@ class App extends Component {
           
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 
-              data={this.state} toggleModal={this.toggleModal} 
-              onSignin={this.onSignin} onSignout={this.onSignout}/>} />
-
-            <Route path="/createpost" render={props => <Createpost {...props} 
               data={this.state} toggleModal={this.toggleModal} 
               onSignin={this.onSignin} onSignout={this.onSignout}/>} />
           

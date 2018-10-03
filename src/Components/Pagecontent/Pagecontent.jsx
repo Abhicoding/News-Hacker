@@ -8,7 +8,7 @@ export default class Pagecontent extends Component {
   render () {
     
     var tab = this.props.location.pathname.slice(1)
-    if (!['topstories', 'beststories', 'newstories'].includes(tab)) return null
+    if (!['topstories', 'beststories', 'newstories', 'nhstories'].includes(tab)) return null
     var data = this.props.data
     var pageinfo = {...this.props.data[`${tab}page`]}
     if (pageinfo === undefined) return null

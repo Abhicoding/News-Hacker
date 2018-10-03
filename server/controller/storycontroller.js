@@ -2,7 +2,7 @@ const model = require('../model/storymodel')
 const  uniqid = require('uniqid')
 
 module.exports = {
-  getAllStoriesIDs: async function getAllStories(req, res) {
+  getAllStoryIDs: async function getAllStoryIDs (req, res) {
     var storyIdArray = await model.getallstoryids()
     if (Array.isArray(storyIdArray)) return res.status(200).json(storyIdArray)
     return res.status(400).send('failed')
