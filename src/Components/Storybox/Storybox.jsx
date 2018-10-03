@@ -1,47 +1,85 @@
-import React from 'react'
+import React, {Component}from 'react'
 import ta from 'time-ago'
 import {Link} from 'react-router-dom'
 
 import {Media, MediaContent, MediaLeft, MediaRight, LevelItem, Icon, Content, Level, LevelLeft} from 'bloomer'
 import './storybox.css'
+import Axios from 'axios';
 
-export default function Storybox ({id, by, score, time, title, descendants, url}) {
-  try { 
-    var link = new URL(url)
-  } catch (e) {
-    link = ''
+export default class Storybox extends Component {
+  constructor (props) {
+    super (props)
+    this.state = {
+      didupvote: this.props.didupvote,
+      score: this.props.score
+    }
+    this.upvote = this.upvote.bind(this)
   }
-  return (<Media>
-    <MediaLeft>
-    </MediaLeft>
-    <MediaContent>
-        <Content>
-            <p>
-              <Link to={`/story/${id}`}>
-                <span className='title'>{`${title} `}</span>
-              </Link>
-              <a href={link.href}>
-                <span className='urlname'>{link ? `(${link.hostname})`: ""}</span>
-              </a>
-            </p>
-        </Content>
-        <Level isMobile>
-            <LevelLeft>
-              <LevelItem className='score'><strong>{score}</strong></LevelItem>
-              <LevelItem className='by' href='#'>
-                <p>by<strong>{` ${by}`}</strong></p>
-              </LevelItem>
-              <LevelItem className='descendants' issize='small'>
-                <Link to={`/story/${id}`}>
-                  <p>{`${descendants} comments`}</p>
+
+  async upvote () {
+    var {user, id, loggedin} = this.props
+    console.log(user)
+    var {didupvote} = this.state
+    if (!loggedin || didupvote) return
+    try {
+      var upvote = await Axios.post('/api/story/upvote', {by: user, id})
+      this.setState({
+        didupvote: true,
+        score: this.state.score + 1
+      })
+    } catch (e) {
+      return e
+    }
+  }
+
+  render () {
+    var {id, by, time, title, descendants, url, loggedin, user} = this.props
+    var {score, didupvote} = this.state
+    var show = window.location.pathname === 'nhstories'
+    try { 
+      var link = new URL(url)
+    } catch (e) {
+      link = ''
+    }
+    return (<Media>
+      <MediaLeft>
+      </MediaLeft>
+      <MediaContent>
+          <Content>
+              <p>
+                <Link to={link ? `${link.hostname}`:`${id}`}>
+                  <span className='title'>{`${title} `}</span>
                 </Link>
-              </LevelItem>
-              <LevelItem className='timeago' href='#'>
-                <i>{ta.ago(new Date() - time)}</i>
-              </LevelItem>
-            </LevelLeft>
-        </Level>
-    </MediaContent>
-    <MediaRight></MediaRight>
-</Media>)
+                <a href={link.href}>
+                  <span className='urlname'>{link ? `(${link.hostname})`: ""}</span>
+                </a>
+              </p>
+          </Content>
+          <Level isMobile>
+              <LevelLeft>
+              <LevelItem>
+                { loggedin 
+                  ? <a href="#"><Icon isSize="medium" 
+                    className={`${didupvote || user===by ? 'fas': 'far'} fa-thumbs-up fa-2x`}
+                    onClick={this.upvote}/></a>
+                  : null}
+                  </LevelItem>
+                <LevelItem className='score'><strong>{score}</strong></LevelItem>
+                <LevelItem className='by' href='#'>
+                  <p>by<strong>{` ${by}`}</strong></p>
+                </LevelItem>
+                <LevelItem className='descendants' issize='small'>
+                  <Link to={!show ? `/story/${id}`: `#`}>
+                    <p>{`${descendants} comments`}</p>
+                  </Link>
+                </LevelItem>
+                <LevelItem className='timeago' href='#'>
+                  <i>{ta.ago(time)}</i>
+                </LevelItem>
+              </LevelLeft>
+          </Level>
+      </MediaContent>
+      <MediaRight></MediaRight>
+  </Media>)
+  }
 }

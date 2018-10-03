@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
 import Storypage from '../Components/Storypage/Storypage.jsx'
+import Createpost from '../Components/Createpost/Createpost'
 import Axios from 'axios';
 
 class App extends Component {
@@ -76,7 +77,7 @@ class App extends Component {
     initial = []
 
     iter.forEach((tab, i) => {
-      var temp = this.getStories(tab, 1, result[tab])
+      var temp = this.getStories(tab.slice(0, -2), 1, result[tab])
       initial.push(temp)  
     })
      initial = await Promise.all(initial)
@@ -85,7 +86,7 @@ class App extends Component {
       result[tab.slice(0, -2)] = [initial[i]]
     })
 
-    var res = await this.auth()
+    var res = (await this.auth()).data
     if (res) {
       result.user = res
       result.loggedin = true
@@ -208,13 +209,19 @@ class App extends Component {
           
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 
-              data={this.state} toggleModal={this.toggleModal} 
-              onSignin={this.onSignin} onSignout={this.onSignout}/>} />
+              data={this.state} toggleModal={this.toggleModal} auth={this.auth}
+              onSignin={this.onSignin} onSignout={this.onSignout} 
+              changeUserStatus={this.changeUserStatus}/>} />
+            
+            <Route path="/createpost" render={props => <Createpost {...props} 
+              data={this.state} toggleModal={this.toggleModal} auth={this.auth}
+              onSignin={this.onSignin} changeUserStatus={this.changeUserStatus}/> } />
           
             <Route path="/" render={props => <Pagecontent {...props} 
-              data={this.state} getStories={this.getStories} 
+              data={this.state} getStories={this.getStories} auth={this.auth}
               pageChange={this.pageChange} toggleModal={this.toggleModal}
-              onSignin={this.onSignin} onSignout={this.onSignout} />} />
+              onSignin={this.onSignin} onSignout={this.onSignout} 
+              changeUserStatus={this.changeUserStatus} />} />
           </Switch>
         </div>
       </BrowserRouter>

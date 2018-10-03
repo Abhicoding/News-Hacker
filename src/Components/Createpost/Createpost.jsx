@@ -25,6 +25,21 @@ export default class Createpost extends Component {
     this.resetMessage = this.resetMessage.bind(this)
   }
 
+  componentWillReceiveProps () {
+    if (!this.props.data.loggedin) return
+    this.intializer()
+  }
+
+  async intializer () {
+    var user = (await this.props.auth()).data
+    if (user) {
+      this.props.onSignin(true, user)
+    } else {
+      this.props.changeUserStatus()
+      this.props.history.goBack()
+    }
+  }
+
   setMessage (message) {
     this.setState({
       message
@@ -77,8 +92,10 @@ export default class Createpost extends Component {
       time: Date.now(),
       descendants: 0
     }
+
+    console.log(story, 'BEFORE POSTING')
     try {
-      var res = await axios.post('/api/story/poststory', JSON.stringify(story))
+      var res = await axios.post('/api/story/poststory', story)
       this.toggleloading2()
       this.handleRedirect('/nhstories')
     } catch (e) {

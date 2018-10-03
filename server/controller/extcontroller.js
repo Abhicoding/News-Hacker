@@ -6,12 +6,15 @@ const model = require('../model/storymodel')
 
 module.exports = {
   getStoryIDs: async (req, res) => {
+    console.log(req.params)
     if (req.params.tabname !== 'nhstories') {
       try {
         var result = await axios.get(`https://hacker-news.firebaseio.com/v0/${req.params.tabname}.json?print=pretty`)
-        res.json(result.data).sendStatus(200)
+        res.status(200).json(result.data)
+        return
       } catch (e) {
-        res.json(e.message).sendStatus(400)
+        res.status(400).json(e.message)
+        return
       }
     }
     return controller.getAllStoryIDs(req, res)
@@ -28,14 +31,18 @@ module.exports = {
   },
 
   getStory : async function getStory (req, res) {
+    console.log(req.params)
     if (req.params.tabname !== 'nhstories') {
       try{
         var result = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${req.params.id}.json?`)
-        res.json(result.data).sendStatus(200)
+        res.status(200).json(result.data)
+        return
       } catch (e) {
         res.status(400).send(e.message)
+        return
       }
     }
+    console.log(req.params)
     return controller.getStorybyID(req, res)
   }
 }

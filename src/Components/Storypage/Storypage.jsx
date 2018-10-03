@@ -23,6 +23,16 @@ export default class Storypage extends Component{
     }
   }
   componentDidMount () {
+    this.intializer()
+  }
+
+  async intializer () {
+    var user = (await this.props.auth()).data
+    if (user) {
+      this.props.onSignin(true, user)
+    } else {
+      this.props.changeUserStatus()
+    }
     this.getStory(this.props.match.params.id)
   }
 
@@ -54,7 +64,7 @@ export default class Storypage extends Component{
       <div className='storypage'>
         <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
           onSignin={this.props.onSignin} />
-        <Storybox className='storypagetitle'  {...this.state.user}/>
+        <Storybox className='storypagetitle'  {...this.state.user} />
         {item}
       </div>
     )

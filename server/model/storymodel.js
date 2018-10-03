@@ -6,7 +6,6 @@ module.exports = {
       if (await Redis.hexists('story', obj.id)) throw new Error (`No reposts`)
       await Redis.lpush('storyIDs', obj.id)
       return await Redis.hset('story', obj.id, JSON.stringify(obj))
-
     } catch (e) {
       return e
     }

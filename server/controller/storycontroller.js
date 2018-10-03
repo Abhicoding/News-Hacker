@@ -10,19 +10,26 @@ module.exports = {
 
   postStories : async function postStories (req, res) {
     if (req.session.username) {
-      var data = req.body
-      data.by = req.session.username
-      data.id = uniqid.time()
-      data.score =0
-      var status = await model.savestory(data)
-      if (status === 'OK') return res.status(201).send('success')
+      try {
+        var data = req.body
+        data.by = req.session.username
+        data.id = uniqid.time()
+        data.score = 0
+        var status = await model.savestory(data)
+        if (status) return res.status(201).send('success')
+      } catch (e){
+        return res.status(400).send(e.message)
+      }
     }
     return res.status(400).send('failed')
   },
 
   upvoteStory : async function upvoteStory (req, res) {
-    if (req.session.username === req.body.by) {
-      if (!(typeof await model.upvote(req.body) === 'object')) {
+    // console.log(req.session, req.session.username)
+    console.log(req.body)
+    if (req.session.username) {
+      var result = await model.upvote(req.body) 
+      if (typeof result === 'object') {
         return res.status(200).send('success')
       }
     }
@@ -37,7 +44,7 @@ module.exports = {
         : false
       var story = JSON.parse(data[0])
       story.didupvote = didupvote
-      story.score = data[1]
+      story.score = data[1] === null ? 0 : data[1]
     } catch (e) {
       return res.status(400).json(e.message)  
     }
