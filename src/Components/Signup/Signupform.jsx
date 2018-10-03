@@ -29,14 +29,11 @@ export default class Signupform extends Component {
   }
 
   userControl (e) {
-    console.log(e.target.value)
     this.setState({
       username: e.target.value})
   }
 
   passControl (e) {
-    console.log(e.target.value)
-    console.log(e.target.className)
     if (e.target.className === 'input pass1') {
       return this.setState({
         password1: e.target.value
@@ -71,7 +68,7 @@ export default class Signupform extends Component {
     var showUserHelp = (tab === 'signup' && field === 'username')
     var showPass1Help = field === 'password1'
     var showPass2Help = field === 'password2'
-    console.log(showUserHelp, showPass1Help, showPass2Help,'PRINTING FROM SIGNUP')
+
     return (
     <Field className='signupform' isHidden={boolean}>
       <Field>

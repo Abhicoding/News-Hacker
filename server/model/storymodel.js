@@ -29,11 +29,11 @@ module.exports = {
       
       if (upvotedArray) {      // checks if array exists
         var temp = JSON.parse(upvotedArray)
-        if (temp.includes(obj.by)) throw `No multiple upvotes`
-        temp.push(obj.by)
+        if (temp.includes(obj.user)) throw `No multiple upvotes`
+        temp.push(obj.user)
         await Redis.hset('upvotedby', obj.id, JSON.stringify(temp))
       } else {                // creates if doesn't
-        await Redis.hset('upvotedby', obj.id, JSON.stringify([obj.by]))
+        await Redis.hset('upvotedby', obj.id, JSON.stringify([obj.user]))
       }
       
       return await Redis.zincrby('score', 1, obj.id)

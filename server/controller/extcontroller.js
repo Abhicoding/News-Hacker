@@ -6,7 +6,7 @@ const model = require('../model/storymodel')
 
 module.exports = {
   getStoryIDs: async (req, res) => {
-    console.log(req.params)
+    // console.log(req.params)
     if (req.params.tabname !== 'nhstories') {
       try {
         var result = await axios.get(`https://hacker-news.firebaseio.com/v0/${req.params.tabname}.json?print=pretty`)
@@ -31,7 +31,7 @@ module.exports = {
   },
 
   getStory : async function getStory (req, res) {
-    console.log(req.params)
+    // console.log(req.params)
     if (req.params.tabname !== 'nhstories') {
       try{
         var result = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${req.params.id}.json?`)
@@ -42,7 +42,7 @@ module.exports = {
         return
       }
     }
-    console.log(req.params)
+    // console.log(req.params)
     return controller.getStorybyID(req, res)
   }
 }

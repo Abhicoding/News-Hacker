@@ -27,13 +27,11 @@ export default class Loginform extends Component {
   }
 
   userControl (e) {
-    console.log(e.target.value)
     this.setState({
       username: e.target.value})
   }
 
   passControl (e) {
-    console.log(e.target.value)
     this.setState({
       password: e.target.value})
   }
@@ -53,7 +51,6 @@ export default class Loginform extends Component {
     var {tab, field, message} = this.props.help
     var showUserHelp = tab === 'login' && field === 'username'
     var showPassHelp = field === 'password'
-    console.log(showUserHelp, showPassHelp)
     return (
       <Field className='loginform' isHidden={!boolean}>
         <Field>

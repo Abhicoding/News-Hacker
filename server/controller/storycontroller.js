@@ -26,11 +26,14 @@ module.exports = {
 
   upvoteStory : async function upvoteStory (req, res) {
     // console.log(req.session, req.session.username)
-    console.log(req.body)
     if (req.session.username) {
-      var result = await model.upvote(req.body) 
-      if (typeof result === 'object') {
-        return res.status(200).send('success')
+      try{
+        var result = await model.upvote(req.body)
+        if (typeof result === 'number') {
+          return res.status(200).send('success')
+        }
+      } catch (e) {
+        return res.status(400).send(e.message)
       }
     }
     return res.status(400).send('failed')
@@ -39,6 +42,7 @@ module.exports = {
   getStorybyID: async function getStorybyID (req, res) {
     try {
       var data = await model.getstorybyid(req.params.id)
+      data[2] = JSON.parse(data[2])
       var didupvote = Array.isArray(data[2]) 
         ? data[2].includes(req.session.username)
         : false

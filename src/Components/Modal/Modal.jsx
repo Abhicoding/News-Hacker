@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Modal, ModalBackground, ModalCard, ModalCardHeader, 
-  ModalCardTitle, ModalCardBody, Button, Delete,
-  Field, Control, Tabs, Tab, TabLink, TabList} from 'bloomer'
+  ModalCardTitle, ModalCardBody, Tabs, Tab, TabLink, TabList} from 'bloomer'
 
 import axios from 'axios'
 
@@ -36,7 +35,6 @@ export default class Login extends Component {
   }
 
   sethelper (obj) {
-    console.log('HELPER CALLED', obj)
     this.setState({
       help: {...obj}
     }, _ => setTimeout(() => this.resethelper(), 60000))
@@ -74,6 +72,7 @@ export default class Login extends Component {
     var url = `/api/user/${formtype}`
     try {
       var res = await axios.post(url, formdata)
+      if (res.status !== 200) throw new Error ('Failed! Please try again.')
       this.props.onSignin(true, formdata.username)
       this.closeForm()
     } catch (e) {

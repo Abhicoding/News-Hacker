@@ -18,11 +18,11 @@ export default class Storybox extends Component {
 
   async upvote () {
     var {user, id, loggedin} = this.props
-    console.log(user)
     var {didupvote} = this.state
     if (!loggedin || didupvote) return
     try {
-      var upvote = await Axios.post('/api/story/upvote', {by: user, id})
+      var upvote = await Axios.post('/api/story/upvote', {user, id})
+      if (upvote.status !== 200) throw new Error('Failed to post upvote') 
       this.setState({
         didupvote: true,
         score: this.state.score + 1
@@ -59,7 +59,7 @@ export default class Storybox extends Component {
               <LevelLeft>
               <LevelItem>
                 { loggedin 
-                  ? <a href="#"><Icon isSize="medium" 
+                  ? <a><Icon isSize="medium" 
                     className={`${didupvote || user===by ? 'fas': 'far'} fa-thumbs-up fa-2x`}
                     onClick={this.upvote}/></a>
                   : null}

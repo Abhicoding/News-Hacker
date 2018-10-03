@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 import {Navbar, NavbarBrand, NavbarBurger, 
-  NavbarStart, NavbarEnd, NavbarItem, NavbarMenu, NavbarLink, 
-  NavbarDivider, NavbarDropdown, Icon} from 'bloomer'
+  NavbarStart, NavbarEnd, NavbarItem, NavbarMenu} from 'bloomer'
 import './header.css'
 import { Button } from 'bloomer/lib/elements/Button';
 
@@ -48,7 +47,6 @@ export default class Header extends Component {
   }
 
   render () {
-    console.log(this.props, 'Logged in status')
     return (
     <div className ='header'>
       <Navbar>
@@ -83,7 +81,11 @@ export default class Header extends Component {
             : null}
           {this.props.data.loggedin 
             ? <NavbarItem className='newpost'>
-              <Button className='newpost-button'><Link to='/createpost'>Create Post</Link></Button></NavbarItem>
+              <Button className='newpost-button' 
+              onClick={()=> this.props.history.push('/createpost')}>
+                Create Post
+              </Button>
+              </NavbarItem>
             : null}
           <NavbarItem className='login'>
             {!this.props.data.loggedin

@@ -36,7 +36,7 @@ export default class Createpost extends Component {
       this.props.onSignin(true, user)
     } else {
       this.props.changeUserStatus()
-      this.props.history.goBack()
+      this.props.history.push('/newstories')
     }
   }
 
@@ -93,9 +93,9 @@ export default class Createpost extends Component {
       descendants: 0
     }
 
-    console.log(story, 'BEFORE POSTING')
     try {
       var res = await axios.post('/api/story/poststory', story)
+      if (!res.status === 201) throw new Error('Failed to post. Try again later.')
       this.toggleloading2()
       this.handleRedirect('/nhstories')
     } catch (e) {

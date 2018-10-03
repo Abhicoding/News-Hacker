@@ -3,20 +3,18 @@ const url = require('url')
 const {promisify} = require('util')
 let client
 
-console.log(process.env.REDIS_URL)
-
 if (process.env.REDIS_URL) {
   const redisURL = url.parse(process.env.REDIS_URL)
   client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true})
   client.auth(redisURL.auth.split(':')[1])
 
   client.on('connect', function () {
-    console.log('connected Redis')
+    // console.log('connected Redis')
   })
 } else {
   client = redis.createClient()
   client.on('connect', function () {
-  console.log('connected Redis')
+  // console.log('connected Redis')
 })  
 }
 
