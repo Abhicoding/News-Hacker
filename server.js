@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const morgan = require('morgan')
+
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -10,6 +10,12 @@ const client = require('./server/model/redis').client
 const userrouter = require('./server/routes/userroutes')
 const storyrouter = require('./server/routes/storyroutes')
 const extrouter = require('./server/routes/extroutes')
+
+var morgan 
+if (!process.env.NODE_ENV=='production') {
+  morgan = require('morgan')
+  app.use(morgan('dev'))
+}
 
 app.use(session({
   secret: '42',
@@ -21,7 +27,6 @@ app.use(session({
 
 app.use(compression())
 app.use(bodyParser.json())
-app.use(morgan('dev'))
 
 app.use('/api/user', userrouter)
 app.use('/api/story', storyrouter)
