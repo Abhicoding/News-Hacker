@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -32,7 +33,7 @@ app.use('/api/user', userrouter)
 app.use('/api/story', storyrouter)
 app.use('/api/ext', extrouter)
 
-app.use(express.static('build'))
+app.use(express.static(path.resolve(__dirname, 'build')))
 
 app.get('*', (req, res) => {
   res.sendFile(__dirname + '/build/index.html');
