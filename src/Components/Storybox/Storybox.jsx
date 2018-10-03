@@ -74,7 +74,7 @@ export default class Storybox extends Component {
                   </Link>
                 </LevelItem>
                 <LevelItem className='timeago' href='#'>
-                  <i>{ta.ago(time)}</i>
+                  <i>{ta.ago(show ? time : (Date.now()-time) )}</i>
                 </LevelItem>
               </LevelLeft>
           </Level>

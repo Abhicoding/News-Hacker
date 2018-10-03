@@ -18,6 +18,7 @@ app.use(session({
   resave: false
 }))
 
+
 app.use(compression())
 app.use(bodyParser.json())
 app.use(morgan('dev'))
@@ -28,6 +29,9 @@ app.use('/api/ext', extrouter)
 
 app.use(express.static('build'))
 
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/build/index.html');
+})
 
 process.on('SIGINT', () => { console.log('Bye bye!'); process.exit() })
 

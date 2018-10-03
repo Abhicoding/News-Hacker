@@ -29,6 +29,7 @@ export default class Pagecontent extends Component {
     if (pageinfo === undefined) return null
     var stories = data[tab][pageinfo.currentpage - 1]
     if (stories === undefined) return null
+    stories =  stories.filter(k => k !== null)
     var item = stories.map(story => <Storybox key={story.id} {...story} 
       loggedin={data.loggedin} user={data.user}/>)
     pageinfo.tab = tab
