@@ -47,7 +47,7 @@ export default class Storybox extends Component {
       <MediaContent>
           <Content>
               <p>
-                <Link to={link ? `${link.hostname}`:`${id}`}>
+                <Link to={link ? `${link}`:`${id}`}>
                   <span className='title'>{`${title} `}</span>
                 </Link>
                 <a href={link.href}>
