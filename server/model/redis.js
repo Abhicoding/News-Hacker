@@ -13,6 +13,11 @@ if (process.env.REDIS_URL) {
   client.on('connect', function () {
     console.log('connected Redis')
   })
+} else {
+  client = redis.createClient()
+  client.on('connect', function () {
+  console.log('connected Redis')
+})  
 }
 
 //if (process.env.NODE_ENV === 'development') {
