@@ -53,7 +53,7 @@ export default class Storypage extends Component{
     return (
       <div className='storypage'>
         <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
-          onSignin={this.props.onSignin} onSignout={this.props.onSignout} />
+          onSignin={this.props.onSignin} />
         <Storybox className='storypagetitle'  {...this.state.user}/>
         {item}
       </div>

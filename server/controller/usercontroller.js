@@ -1,8 +1,11 @@
 const model = require('../model/usermodel')
 
 module.exports = {
-  test: (req, res) => {
-    res.sendStatus(200)
+  auth: (req, res) => {
+    if (req.session.username) {
+      return res.status(200).send(req.session.username)
+    }
+    res.status(400).send('failed')
   },
 
   login: async function login (req, res) {
@@ -12,7 +15,7 @@ module.exports = {
       req.session.username = req.body.username
       return res.status(200).json(req.body.username)
     }
-    if (typeof check === "object") return res.status(401).send(`Error: ${check.message}`)
+    if (typeof check === "object") return res.status(401).send(`Error: ${check.message}`)  
     return res.status(401).send('Error: Oops! something went wrong')
   },
 

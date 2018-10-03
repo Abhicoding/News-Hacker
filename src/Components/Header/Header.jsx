@@ -44,7 +44,7 @@ export default class Header extends Component {
   }
 
   handleLogout () {
-    this.props.signout()
+    this.props.onSignout()
   }
 
   render () {

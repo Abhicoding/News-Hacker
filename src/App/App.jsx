@@ -5,6 +5,7 @@ import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
 import Storypage from '../Components/Storypage/Storypage.jsx'
 import Createpost from '../Components/Createpost/Createpost.jsx';
+import Axios from 'axios';
 
 class App extends Component {
   constructor () {
@@ -160,8 +161,13 @@ class App extends Component {
     })
   }
 
-  onSignout () {
-    this.setState({
+  async onSignout () {
+    try{
+      var res = await Axios.get('api/user/logout')
+    } catch (e) {
+      return  
+    }
+    return this.setState({
       loggedin: false,
       user: ''
     })
@@ -174,7 +180,7 @@ class App extends Component {
           
           <Route path="/"  render={props => <Header {...props} data={this.state}
             getStoryIds={this.getStoryIds} pageChange={this.pageChange}
-            tabswitch={this.tabswitch} toggleModal={this.toggleModal}/>} />
+            tabswitch={this.tabswitch} toggleModal={this.toggleModal} onSignout={this.onSignout}/>} />
           
           <Switch>
             <Route path="/story/:id" render={props => <Storypage {...props} 

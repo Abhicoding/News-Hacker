@@ -3,6 +3,8 @@ import {Modal, ModalBackground, ModalCard, ModalCardHeader,
   ModalCardTitle, ModalCardBody, Button, Delete,
   Field, Control, Tabs, Tab, TabLink, TabList} from 'bloomer'
 
+import axios from 'axios'
+
 import Loginform from '../Loginform/Loginform'
 import Signupform from '../Signup/Signupform'
 
@@ -68,13 +70,19 @@ export default class Login extends Component {
     return this.submitForm(formdata, formtype)
   }
 
-  submitForm (formdata, formtype) {
+  async submitForm (formdata, formtype) {
     var url = `/api/user/${formtype}`
-    // fetch (url, formdata)
-    //   .then(res => console.log(res.json))
-    console.log(formdata, url)
-    this.props.onSignin(true, formdata.username)
-    this.closeForm()
+    try {
+      var res = await axios.post(url, formdata)
+      this.props.onSignin(true, formdata.username)
+      this.closeForm()
+    } catch (e) {
+      return this.sethelper({
+        tab: formtype,
+        field: 'username',
+        message: e.message
+      })
+    }
   }
 
   closeForm () {

@@ -22,7 +22,7 @@ module.exports = {
     try {
       var validuser = await Redis.hexists('user', obj.username)
       if (validuser) {
-        var cred = JSON.parse(await Redis.hmget('user', obj.username)).password
+        var cred = JSON.parse(await Redis.hget('user', obj.username)).password
         if (await Bcrypt.compare(obj.password, cred)) return true
         throw new Error(`Password didn't match`)
       }

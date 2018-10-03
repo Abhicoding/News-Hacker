@@ -20,7 +20,7 @@ export default class Pagecontent extends Component {
     return (
       <div className='pagecontent'>
         <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
-          onSignin={this.props.onSignin} onSignout={this.props.onSignout} />
+          onSignin={this.props.onSignin} />
         <div className='item'>{item}</div>
           <div className='paginationfooter'>
             {item.length < 5 ?

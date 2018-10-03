@@ -1,5 +1,5 @@
 const model = require('../model/storymodel')
-const axios = require('axios')
+const  uniqid = require('uniqid')
 
 module.exports = {
   getAllStoriesIDs: async function getAllStories(req, res) {
@@ -8,14 +8,13 @@ module.exports = {
     return res.status(400).send('failed')
   },
 
-  getHNStories: async (req, res) => {
-    var result = await axios.get(`https://hacker-news.firebaseio.com/v0/${req.params.tabname}.json?print=pretty`)
-    res.json(result.data).sendStatus(200)
-  },
-
   postStories : async function postStories (req, res) {
-    if (req.session.username === req.body.by) {
-      var status = await model.savestory(req.body)
+    if (req.session.username) {
+      var data = req.body
+      data.by = req.session.username
+      data.id = uniqid.time()
+      data.score =0
+      var status = await model.savestory(data)
       if (status === 'OK') return res.status(201).send('success')
     }
     return res.status(400).send('failed')
