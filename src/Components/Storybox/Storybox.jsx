@@ -2,7 +2,8 @@ import React, {Component}from 'react'
 import ta from 'time-ago'
 import {Link} from 'react-router-dom'
 
-import {Media, MediaContent, MediaLeft, MediaRight, LevelItem, Icon, Content, Level, LevelLeft} from 'bloomer'
+import {Media, MediaContent, MediaLeft, MediaRight, 
+  LevelItem, Icon, Content, Level, LevelLeft} from 'bloomer'
 import './storybox.css'
 import Axios from 'axios';
 
@@ -17,7 +18,6 @@ export default class Storybox extends Component {
   }
 
   async upvote () {
-    console.log('This ran')
     var {user, id, loggedin} = this.props
     var {didupvote} = this.state
     if (!loggedin || didupvote) return
@@ -45,7 +45,6 @@ export default class Storybox extends Component {
     } catch (e) {
       link = ''
     }
-    console.log(show, window.location.pathname)
     return (<Media>
       <MediaLeft>
       </MediaLeft>

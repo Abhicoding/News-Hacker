@@ -27,7 +27,6 @@ export default class Storypage extends Component{
   }
 
   async intializer () {
-    console.log(this.props.match.params.id)
     var user = (await this.props.auth()).data
     if (user) {
       this.props.onSignin(true, user)
