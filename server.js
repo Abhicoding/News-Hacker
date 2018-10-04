@@ -13,10 +13,10 @@ const storyrouter = require('./server/routes/storyroutes')
 const extrouter = require('./server/routes/extroutes')
 
 var morgan
-//if (!process.env.NODE_ENV=='production') {
+if (!process.env.NODE_ENV=='production') {
   morgan = require('morgan')
   app.use(morgan('dev'))
-// }
+}
 
 app.use(session({
   secret: '42',
