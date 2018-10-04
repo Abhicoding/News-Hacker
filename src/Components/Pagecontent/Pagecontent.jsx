@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {BarLoader} from 'react-spinners'
+
 import './pagecontent.css'
 import Storybox from '../Storybox/Storybox.jsx'
 import Paginationfooter from '../Paginationfooter/Paginationfooter.jsx'
@@ -20,7 +22,9 @@ export default class Pagecontent extends Component {
   }
 
   render () {
-    
+    if (this.props.data.loading) {
+      return (<BarLoader color={"#0E4749"} widthUnit={'1'} loading={this.props.data.loading}/>)
+    }
     var tab = this.props.location.pathname.slice(1)
     if (!['topstories', 'beststories', 'newstories', 'nhstories']
       .includes(tab)) return null
@@ -36,7 +40,8 @@ export default class Pagecontent extends Component {
     
     return (
       <div className='pagecontent'>
-        <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
+        <Login modal={this.props.data.modal} 
+          toggleModal={this.props.toggleModal}
           onSignin={this.props.onSignin} />
         <div className='item'>{item}</div>
           <div className='paginationfooter'>

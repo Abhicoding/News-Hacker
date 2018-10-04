@@ -38,7 +38,8 @@ class App extends Component {
       },
       modal: false,
       loggedin: false,
-      user: ''
+      user: '',
+      loading: false
     }
     this.getStoryIds = this.getStoryIds.bind(this)
     this.getStories = this.getStories.bind(this)
@@ -56,6 +57,7 @@ class App extends Component {
   }
 
   async initialize () {
+    this.setState({loading: true})
     var initial = [];
     var result = {};
     var iter = ['topstoriesID', 'beststoriesID', 'newstoriesID', 'nhstoriesID']
@@ -95,7 +97,7 @@ class App extends Component {
 
     this.setState({
       ...result, 
-      show: [...result['topstories'][0]]
+      loading: false
     })
   }
 

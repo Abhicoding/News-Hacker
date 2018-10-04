@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import {BarLoader} from 'react-spinners'
 
 import Storybox from '../Storybox/Storybox';
 import Comment from '../Comment/Comment'
@@ -20,14 +21,19 @@ export default class Storypage extends Component{
         type: "",
         url: ""
       },
-      kids : []
+      kids : [],
+      loading1: false,
+      loading2: false
     }
+    this.getStory = this.getStory.bind(this)
+    this.getChildren = this.getChildren.bind(this)
   }
   componentDidMount () {
     this.intializer()
   }
 
   async intializer () {
+    this.setState({loading1: true, loading2: true})
     var user = (await this.props.auth()).data
     if (user) {
       this.props.onSignin(true, user)
@@ -41,13 +47,15 @@ export default class Storypage extends Component{
     var result = await axios.get(`/api/ext/item/${id}`)
     this.setState({
       user: {
-        ...result.data
-      }
+        ...result.data,
+      },
+      loading1: false
     })
     if (!result.data.descendants) return
     var kids = await this.getChildren(result.data.kids)
     this.setState({
-      kids
+      kids,
+      loading2: false
     })
   }
   async getChildren (arr) {
@@ -57,16 +65,23 @@ export default class Storypage extends Component{
   }
 
   render () {
-    if (!this.state.user.time) return null
+    var {loading1, loading2} = this.state
     var item = this.state.kids
       .filter(y => y.by !== undefined && y.text)
       .map(x => <Comment key={x.id} getChildren = {this.getChildren} {...x} />)
     return (
       <div className='storypage'>
-        <Login modal={this.props.data.modal} toggleModal={this.props.toggleModal}
+        <Login modal={this.props.data.modal} 
+        toggleModal={this.props.toggleModal}
           onSignin={this.props.onSignin} />
-        <Storybox className='storypagetitle'  {...this.state.user} />
-        {item}
+        {!loading1
+          ? <Storybox  {...this.state.user} />
+          : <BarLoader color={"#0E4749"} widthUnit={'1'} 
+            loading={loading1}/>}
+        {loading2 
+          ? <BarLoader color={"#79B791"} widthUnit={'1'} 
+          loading={loading2}/>
+          : item}
       </div>
     )
   }

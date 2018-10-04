@@ -29,3 +29,13 @@ span.title:visited {
   font-size: 0.8rem;
   color: #7D7D7D;
 }
+
+.content.story {
+  padding-left: 1vw;
+  padding-top: 3vh;
+}
+
+nav.level.story-attributes{
+  padding-left: 1vw;
+  padding-top: 1vh;
+}
