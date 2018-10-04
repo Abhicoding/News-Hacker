@@ -80,7 +80,8 @@ class App extends Component {
       var temp = this.getStories(tab.slice(0, -2), 1, result[tab])
       initial.push(temp)  
     })
-     initial = await Promise.all(initial)
+    initial = await Promise.all(initial)
+
     
     iter.forEach((tab, i) => {
       result[tab.slice(0, -2)] = [initial[i]]

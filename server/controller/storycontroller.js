@@ -28,8 +28,8 @@ module.exports = {
     // console.log(req.session, req.session.username)
     if (req.session.username) {
       try{
-        var result = await model.upvote(req.body)
-        if (typeof result === 'number') {
+        var result = model.upvote(req.body)
+        if (typeof Number(result) === 'number') {
           return res.status(200).send('success')
         }
       } catch (e) {
@@ -42,12 +42,15 @@ module.exports = {
   getStorybyID: async function getStorybyID (req, res) {
     try {
       var data = await model.getstorybyid(req.params.id)
-      data[2] = JSON.parse(data[2])
-      var didupvote = Array.isArray(data[2]) 
-        ? data[2].includes(req.session.username)
-        : false
       var story = JSON.parse(data[0])
-      story.didupvote = didupvote
+      story.time = Date.now() - story.time
+      if (req.session.username) {
+        data[2] = JSON.parse(data[2])
+        var didupvote = Array.isArray(data[2]) 
+          ? data[2].includes(req.session.username)
+          : false
+        story.didupvote = didupvote
+      }
       story.score = data[1] === null ? 0 : data[1]
     } catch (e) {
       return res.status(400).json(e.message)  

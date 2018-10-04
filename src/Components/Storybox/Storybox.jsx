@@ -17,6 +17,7 @@ export default class Storybox extends Component {
   }
 
   async upvote () {
+    console.log('This ran')
     var {user, id, loggedin} = this.props
     var {didupvote} = this.state
     if (!loggedin || didupvote) return
@@ -25,7 +26,7 @@ export default class Storybox extends Component {
       if (upvote.status !== 200) throw new Error('Failed to post upvote') 
       this.setState({
         didupvote: true,
-        score: this.state.score + 1
+        score: Number(this.state.score) + 1
       })
     } catch (e) {
       return e
@@ -35,21 +36,29 @@ export default class Storybox extends Component {
   render () {
     var {id, by, time, title, descendants, url, loggedin, user} = this.props
     var {score, didupvote} = this.state
-    var show = window.location.pathname === 'nhstories'
+
+
+
+    var show = window.location.pathname === '/nhstories'
     try { 
       var link = new URL(url)
     } catch (e) {
       link = ''
     }
+    console.log(show, window.location.pathname)
     return (<Media>
       <MediaLeft>
       </MediaLeft>
       <MediaContent>
           <Content>
               <p>
-                <Link to={link ? `${link}`:`${id}`}>
+                {show ?
+              (<Link to={`/story/${id}`}>
                   <span className='title'>{`${title} `}</span>
-                </Link>
+                </Link>)
+                :(<a href={link.href}>
+                <span className='title'>{`${title} `}</span>
+              </a>)}
                 <a href={link.href}>
                   <span className='urlname'>{link ? `(${link.hostname})`: ""}</span>
                 </a>
@@ -60,7 +69,7 @@ export default class Storybox extends Component {
               <LevelItem>
                 { loggedin 
                   ? <a><Icon isSize="medium" 
-                    className={`${didupvote || user===by ? 'fas': 'far'} fa-thumbs-up fa-2x`}
+                    className={`${didupvote || user === by ? 'fas': 'far'} fa-thumbs-up fa-2x`}
                     onClick={this.upvote}/></a>
                   : null}
                   </LevelItem>
@@ -74,7 +83,7 @@ export default class Storybox extends Component {
                   </Link>
                 </LevelItem>
                 <LevelItem className='timeago' href='#'>
-                  <i>{ta.ago(show ? time : (Date.now()-time) )}</i>
+                  <i>{ta.ago(Date.now() - time)}</i>
                 </LevelItem>
               </LevelLeft>
           </Level>

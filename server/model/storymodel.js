@@ -1,4 +1,4 @@
-const Redis = require('./redis.js')
+const Redis = require('./redis.js');
 
 module.exports = {
   savestory : async function saveStory (obj) {

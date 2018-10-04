@@ -36,7 +36,6 @@ export default class Createpost extends Component {
       this.props.onSignin(true, user)
     } else {
       this.props.changeUserStatus()
-      this.props.history.push('/newstories')
     }
   }
 
@@ -142,7 +141,7 @@ export default class Createpost extends Component {
           onClick={this.postStory}>Submit</Button>
       </Control>
       <Control>
-        <Button onClick={this.props.history.goBack}>Cancel</Button>
+        <Button href={window.location.origin + '/nhstories'} onClick={this.props.history.goBack}>Cancel</Button>
       </Control>
       </Field>
     </Container>

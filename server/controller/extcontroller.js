@@ -19,6 +19,7 @@ module.exports = {
     }
     return controller.getAllStoryIDs(req, res)
   },
+  
   getTitle : async function getTitle (req, res) {
     try {
       var html = await axios.get(req.body.url)

@@ -27,6 +27,7 @@ export default class Storypage extends Component{
   }
 
   async intializer () {
+    console.log(this.props.match.params.id)
     var user = (await this.props.auth()).data
     if (user) {
       this.props.onSignin(true, user)
@@ -44,6 +45,7 @@ export default class Storypage extends Component{
         ...result
       }
     })
+    if (!result.descendants) return
     var kids = await this.getChildren(result.kids)
     this.setState({
       kids
