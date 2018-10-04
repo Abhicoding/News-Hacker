@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import axios from 'axios'
 
 import Storybox from '../Storybox/Storybox';
 import Comment from '../Comment/Comment'
@@ -37,23 +38,22 @@ export default class Storypage extends Component{
   }
 
   async getStory (id) {
-    var res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${this.props.match.params.id}.json?print=pretty`)
-    var result = await res.json()
+    var result = await axios.get(`/api/ext/item/${id}`)
     this.setState({
       user: {
-        ...result
+        ...result.data
       }
     })
-    if (!result.descendants) return
-    var kids = await this.getChildren(result.kids)
+    if (!result.data.descendants) return
+    var kids = await this.getChildren(result.data.kids)
     this.setState({
       kids
     })
   }
   async getChildren (arr) {
-    var arrProm = arr.map(x => fetch(`https://hacker-news.firebaseio.com/v0/item/${x}.json?print=pretty`))
-    var promiseArr = await Promise.all(arrProm.map(p => p.catch(e => e)))
-    return await Promise.all(promiseArr.map(x => x.json()))
+    var arrProm = arr.map(id => axios.get(`/api/ext/item/${id}`))
+    var dataArr = await Promise.all(arrProm.map(p => p.catch(e => e)))
+    return dataArr.map(x => x.data)
   }
 
   render () {

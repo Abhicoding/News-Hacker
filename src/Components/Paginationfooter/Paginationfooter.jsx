@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Pagination, PageControl, PageList, Page, PageLink, PageEllipsis} from 'bloomer'
 
+import './paginationfooter.css'
 export default class Paginationfooter extends Component{
 
   handlePage (page) {

@@ -43,6 +43,7 @@ module.exports = {
     try {
       var data = await model.getstorybyid(req.params.id)
       var story = JSON.parse(data[0])
+      if (story === null) throw new Error(`No such story`)
       story.time = Date.now() - story.time
       if (req.session.username) {
         data[2] = JSON.parse(data[2])

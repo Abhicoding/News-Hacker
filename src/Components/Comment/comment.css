@@ -15,6 +15,7 @@
 
 .text>pre{
   white-space: pre-wrap;
+  background: #D1F0D9
 }
 
 pre a {
@@ -22,8 +23,8 @@ pre a {
   text-decoration: underline
 }
 
-.comment {
-  margin-left: 10%;
+.media-content {
+  padding-left: 0.4vw;
 }
 
 .media .media {

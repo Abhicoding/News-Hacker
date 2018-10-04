@@ -1,0 +1,5 @@
+.pagination-link.is-current {
+  background-color: #6FB074;
+  border-color: #9CDDA1;
+  color: #fff;
+}
