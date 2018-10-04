@@ -63,3 +63,9 @@
   background: #17BEBB;
   border-color: #0E4749;
 }
+
+.navbar-item.github:hover {
+  text-decoration:none;
+  background: #3C887E;
+  color: #B2B09B;
+}

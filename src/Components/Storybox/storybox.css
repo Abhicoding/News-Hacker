@@ -7,6 +7,9 @@ span.title {
   font-size: 1rem;
   color: #0E4749;
 }
+span.title:visited {
+  color: #5F9D95;
+}
 
 .score strong {
   color: #79B791;

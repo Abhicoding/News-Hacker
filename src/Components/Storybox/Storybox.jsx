@@ -55,7 +55,7 @@ export default class Storybox extends Component {
               (<Link to={`/story/${id}`}>
                   <span className='title'>{`${title} `}</span>
                 </Link>)
-                :(<a href={link.href}>
+                :(<a href={link.href} target="_blank">
                 <span className='title'>{`${title} `}</span>
               </a>)}
                 <a href={link.href}>

@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 import {Navbar, NavbarBrand, NavbarBurger, 
-  NavbarStart, NavbarEnd, NavbarItem, NavbarMenu} from 'bloomer'
+  NavbarStart, NavbarEnd, NavbarItem, NavbarMenu, Button, Icon} from 'bloomer'
 import './header.css'
-import { Button } from 'bloomer/lib/elements/Button';
 
 export default class Header extends Component {
   constructor() {
@@ -76,8 +75,13 @@ export default class Header extends Component {
           </NavbarItem>
         </NavbarStart>
         <NavbarEnd>
-          {this.props.data.loggedin 
-            ? <NavbarItem className='user'>{`Hi, ${this.props.data.user}`}</NavbarItem> 
+          {this.props.data.loggedin
+            ? <NavbarItem className='user'>{`Hi, ${this.props.data.user}`}</NavbarItem>
+            : null}
+          {!this.props.data.loggedin
+            ? (<NavbarItem className='github' target="_blank" href="https://github.com/Abhicoding/News-Hacker" isHidden='touch'>
+                <Icon className='fab fa-github'/>
+              </NavbarItem>)
             : null}
           {this.props.data.loggedin 
             ? <NavbarItem className='newpost'>
