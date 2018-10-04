@@ -51,7 +51,7 @@ export default class Storypage extends Component{
       },
       loading1: false
     })
-    if (!result.data.descendants) return
+    if (!result.data.descendants) return this.setState({loading2: false})
     var kids = await this.getChildren(result.data.kids)
     this.setState({
       kids,
