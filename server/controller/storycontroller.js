@@ -25,7 +25,6 @@ module.exports = {
   },
 
   upvoteStory : async function upvoteStory (req, res) {
-    // console.log(req.session, req.session.username)
     if (req.session.username) {
       try{
         var result = model.upvote(req.body)

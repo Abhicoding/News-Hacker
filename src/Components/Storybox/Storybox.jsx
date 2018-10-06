@@ -3,7 +3,7 @@ import ta from 'time-ago'
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 
-import {Media, MediaContent, MediaLeft, MediaRight, 
+import {Media, MediaContent, MediaRight, 
   LevelItem, Icon, Content, Level, LevelLeft} from 'bloomer'
 import './storybox.css'
 
