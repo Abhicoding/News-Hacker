@@ -34,7 +34,7 @@ export default class Comment extends Component {
     return (<Media>
       <MediaLeft>
       </MediaLeft>
-      <MediaContent>
+      <MediaContent className="comment">
           <Level isMobile>
               <LevelLeft>
                 <LevelItem className='by' href='#'>
