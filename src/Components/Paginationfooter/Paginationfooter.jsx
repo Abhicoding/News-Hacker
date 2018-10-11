@@ -15,10 +15,10 @@ export default class Paginationfooter extends Component {
     var last = currentpage === maxpage
     return (
       <Pagination>
-        <PageControl onClick={() => this.handlePage(currentpage - 1)}>
+        <PageControl isHidden={first} onClick={() => this.handlePage(currentpage - 1)}>
           Previous
         </PageControl>
-        <PageControl isNext onClick={() => this.handlePage(currentpage + 1)}>
+        <PageControl isNext isHidden={last} onClick={() => this.handlePage(currentpage + 1)}>
           Next
         </PageControl>
         <PageList>
