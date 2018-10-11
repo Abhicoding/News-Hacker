@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import {Field, Label, Input, Control, Button, Help} from 'bloomer'
+import React, { Component } from 'react'
+import { Field, Label, Input, Control, Button, Help } from 'bloomer'
 
 export default class Signupform extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      username : '',
-      password1 : '',
-      password2 : '',
+      username: '',
+      password1: '',
+      password2: '',
       help: this.props.help
     }
 
@@ -22,15 +22,15 @@ export default class Signupform extends Component {
 
   resetForm () {
     this.setState({
-      username : '',
-      password1 : '',
+      username: '',
+      password1: '',
       password2: ''
     })
   }
 
   userControl (e) {
     this.setState({
-      username: e.target.value})
+      username: e.target.value })
   }
 
   passControl (e) {
@@ -50,46 +50,46 @@ export default class Signupform extends Component {
   }
 
   onSubmit () {
-    var {username, password1, password2} = this.state
+    var { username, password1, password2 } = this.state
     if (password1 === password2) {
-      return this.props.validateForm({username, password: password1}, 'signup')
+      return this.props.validateForm({ username, password: password1 }, 'signup')
     }
     this.props.sethelper({
       tab: 'signup',
       field: 'password2',
       message: 'Password did not match'
     })
-    this.setState({password2: ''})
+    this.setState({ password2: '' })
   }
 
   render () {
     var boolean = this.props.tab
-    var {tab, field, message} = this.props.help
+    var { tab, field, message } = this.props.help
     var showUserHelp = (tab === 'signup' && field === 'username')
     var showPass1Help = field === 'password1'
     var showPass2Help = field === 'password2'
 
     return (
-    <Field className='signupform' isHidden={boolean}>
-      <Field>
+      <Field className='signupform' isHidden={boolean}>
+        <Field>
           <Label>Username</Label>
-          <Input placeholder='Username' type="text" 
+          <Input placeholder='Username' type='text'
             onChange={e => this.userControl(e)} value={this.state.username} />
           <Help isColor='danger' isHidden={!showUserHelp}>{message}</Help>
         </Field>
         <Field>
           <Label>Password</Label>
-          <Input className= 'pass1' type="password" placeholder='Password' 
+          <Input className='pass1' type='password' placeholder='Password'
             onChange={e => this.passControl(e)} value={this.state.password1}
           />
           <Help isColor='danger'isHidden={!showPass1Help}>{message}</Help>
         </Field>
         <Field>
           <Label>Confirm Password</Label>
-          <Input className= 'pass2' type="password" placeholder='Password' 
+          <Input className='pass2' type='password' placeholder='Password'
             onChange={e => this.passControl(e)} value={this.state.password2}
-            />
-            <Help isColor='danger'isHidden={!showPass2Help}>{message}</Help>
+          />
+          <Help isColor='danger'isHidden={!showPass2Help}>{message}</Help>
         </Field>
         <Field isGrouped>
           <Control>
@@ -99,7 +99,7 @@ export default class Signupform extends Component {
             <Button className='cancel' onClick={this.onClose}>Cancel</Button>
           </Control>
         </Field>
-    </Field>
+      </Field>
     )
   }
 }

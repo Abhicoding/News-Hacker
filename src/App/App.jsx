@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Header from '../Components/Header/Header.jsx'
 import Pagecontent from '../Components/Pagecontent/Pagecontent.jsx'
 import Storypage from '../Components/Storypage/Storypage.jsx'
 import Createpost from '../Components/Createpost/Createpost'
-import Axios from 'axios';
+import Axios from 'axios'
 
 class App extends Component {
   constructor () {
     super()
     this.state = {
       showcount: 10,
-      newstories : [],
+      newstories: [],
       topstories: [],
       beststories: [],
       nhstories: [],
@@ -57,9 +57,9 @@ class App extends Component {
   }
 
   async initialize () {
-    this.setState({loading: true})
-    var initial = [];
-    var result = {};
+    this.setState({ loading: true })
+    var initial = []
+    var result = {}
     var iter = ['topstoriesID', 'beststoriesID', 'newstoriesID', 'nhstoriesID']
 
     iter.forEach(tab => {
@@ -68,23 +68,22 @@ class App extends Component {
     })
 
     initial = await Promise.all(initial)
-    
+
     iter.forEach((tab, i) => {
       result[tab] = initial[i]
       result[`${tab.slice(0, -2)}page`] = {
         currentpage: 1,
-        maxpage: Math.ceil(initial[i].length/this.state.showcount)
+        maxpage: Math.ceil(initial[i].length / this.state.showcount)
       }
     })
     initial = []
 
     iter.forEach((tab, i) => {
       var temp = this.getStories(tab.slice(0, -2), 1, result[tab])
-      initial.push(temp)  
+      initial.push(temp)
     })
     initial = await Promise.all(initial)
 
-    
     iter.forEach((tab, i) => {
       result[tab.slice(0, -2)] = [initial[i]]
     })
@@ -96,14 +95,14 @@ class App extends Component {
     }
 
     this.setState({
-      ...result, 
+      ...result,
       loading: false
     })
   }
 
   async auth () {
     try {
-      return await Axios.get('/api/user/auth') 
+      return await Axios.get('/api/user/auth')
     } catch (e) {
       return false
     }
@@ -118,10 +117,10 @@ class App extends Component {
     if (!page && !arr) {
       return
     }
-    
+
     if (arr === undefined) arr = this.state[tab]
-    
-    if (page !== null) arr = arr.slice(page-1, page * this.state.showcount)
+
+    if (page !== null) arr = arr.slice(page - 1, page * this.state.showcount)
 
     var arrProm = arr.map(id => Axios.get(`/api/ext/story/${tab}/${id}`))
 
@@ -131,12 +130,12 @@ class App extends Component {
   }
 
   async managePageStory (tab, pageNo) {
-    var start = (pageNo-1)*this.state.showcount
-    var end = pageNo *this.state.showcount
+    var start = (pageNo - 1) * this.state.showcount
+    var end = pageNo * this.state.showcount
     var tocheck = this.state[tab]
     var toget = []
     for (let i = start; i < end; i++) { // Good chance of dealing with a sparse array here
-      if (!Boolean(tocheck[i])) toget.push(this.state[`${tab}ID`][i])
+      if (!tocheck[i]) toget.push(this.state[`${tab}ID`][i])
     }
     var stories = await this.getStories(tab, null, toget)
     this.setPageStory(tab, pageNo, stories)
@@ -144,7 +143,7 @@ class App extends Component {
 
   setPageStory (tab, page, arr) {
     var newArr = this.state[tab]
-    newArr[page-1] = arr
+    newArr[page - 1] = arr
     this.setState({
       [tab]: [...newArr],
       [`${tab}page`]: {
@@ -160,8 +159,8 @@ class App extends Component {
     })
   }
 
-  pageChange(tab, page) {
-    if (this.state[tab][page -1] !== undefined) {
+  pageChange (tab, page) {
+    if (this.state[tab][page - 1] !== undefined) {
       return this.setState({
         [`${tab}page`]: {
           ...this.state[`${tab}page`],
@@ -193,43 +192,43 @@ class App extends Component {
   }
 
   async onSignout () {
-    try{
+    try {
       await Axios.get('api/user/logout')
     } catch (e) {
-      return  
+      return
     }
     return this.changeUserStatus()
   }
 
-  render() {
+  render () {
     return (
       <BrowserRouter>
-        <div className="App">
-          
-          <Route path="/"  render={props => <Header {...props} data={this.state}
+        <div className='App'>
+
+          <Route path='/' render={props => <Header {...props} data={this.state}
             getStoryIds={this.getStoryIds} pageChange={this.pageChange}
-            tabswitch={this.tabswitch} toggleModal={this.toggleModal} onSignout={this.onSignout}/>} />
-          
+            tabswitch={this.tabswitch} toggleModal={this.toggleModal} onSignout={this.onSignout} />} />
+
           <Switch>
-            <Route path="/story/:id" render={props => <Storypage {...props} 
+            <Route path='/story/:id' render={props => <Storypage {...props}
               data={this.state} toggleModal={this.toggleModal} auth={this.auth}
-              onSignin={this.onSignin} onSignout={this.onSignout} 
-              changeUserStatus={this.changeUserStatus}/>} />
-            
-            <Route path="/createpost" render={props => <Createpost {...props} 
+              onSignin={this.onSignin} onSignout={this.onSignout}
+              changeUserStatus={this.changeUserStatus} />} />
+
+            <Route path='/createpost' render={props => <Createpost {...props}
               data={this.state} toggleModal={this.toggleModal} auth={this.auth}
-              onSignin={this.onSignin} changeUserStatus={this.changeUserStatus}/> } />
-          
-            <Route path="/" render={props => <Pagecontent {...props} 
+              onSignin={this.onSignin} changeUserStatus={this.changeUserStatus} />} />
+
+            <Route path='/' render={props => <Pagecontent {...props}
               data={this.state} getStories={this.getStories} auth={this.auth}
               pageChange={this.pageChange} toggleModal={this.toggleModal}
-              onSignin={this.onSignin} onSignout={this.onSignout} 
+              onSignin={this.onSignin} onSignout={this.onSignout}
               changeUserStatus={this.changeUserStatus} />} />
           </Switch>
         </div>
       </BrowserRouter>
-    );
+    )
   }
 }
 
-export default App;
+export default App

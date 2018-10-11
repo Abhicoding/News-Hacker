@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {BarLoader} from 'react-spinners'
+import React, { Component } from 'react'
+import { BarLoader } from 'react-spinners'
 
 import './pagecontent.css'
 import Storybox from '../Storybox/Storybox.jsx'
@@ -23,32 +23,33 @@ export default class Pagecontent extends Component {
 
   render () {
     if (this.props.data.loading) {
-      return (<BarLoader color={"#0E4749"} widthUnit={'1'} loading={this.props.data.loading}/>)
+      return (<BarLoader color={'#0E4749'} widthUnit={'1'} loading={this.props.data.loading} />)
     }
     var tab = this.props.location.pathname.slice(1)
     if (!['topstories', 'beststories', 'newstories', 'nhstories']
       .includes(tab)) return null
     var data = this.props.data
-    var pageinfo = {...this.props.data[`${tab}page`]}
+    var pageinfo = { ...this.props.data[`${tab}page`] }
     if (pageinfo === undefined) return null
     var stories = data[tab][pageinfo.currentpage - 1]
     if (stories === undefined) return null
-    stories =  stories.filter(k => k !== null)
-    var item = stories.map(story => <Storybox key={story.id} {...story} 
-      loggedin={data.loggedin} user={data.user}/>)
+    stories = stories.filter(k => k !== null)
+    var item = stories.map(story => <Storybox key={story.id} {...story}
+      loggedin={data.loggedin} user={data.user} />)
     pageinfo.tab = tab
-    
+
     return (
       <div className='pagecontent'>
-        <Login modal={this.props.data.modal} 
+        <Login modal={this.props.data.modal}
           toggleModal={this.props.toggleModal}
           onSignin={this.props.onSignin} />
         <div className='item'>{item}</div>
-          <div className='paginationfooter'>
-            {item.length < 5 ?
-              null: <Paginationfooter {...pageinfo}
-              pageChange={this.props.pageChange} />}
-          </div>
+        <div className='paginationfooter'>
+          {item.length < 5
+              ? null : <Paginationfooter {...pageinfo}
+                pageChange={this.props.pageChange} />}
+        </div>
       </div>
-  )}
+    )
+ }
 }

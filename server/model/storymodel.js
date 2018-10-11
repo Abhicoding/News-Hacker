@@ -1,9 +1,9 @@
-const Redis = require('./redis.js');
+const Redis = require('./redis.js')
 
 module.exports = {
-  savestory : async function saveStory (obj) {
+  savestory: async function saveStory (obj) {
     try {
-      if (await Redis.hexists('story', obj.id)) throw new Error (`No reposts`)
+      if (await Redis.hexists('story', obj.id)) throw new Error(`No reposts`)
       await Redis.lpush('storyIDs', obj.id)
       return await Redis.hset('story', obj.id, JSON.stringify(obj))
     } catch (e) {
@@ -11,7 +11,7 @@ module.exports = {
     }
   },
 
-  getallstoryids : async function getallstories () {
+  getallstoryids: async function getallstories () {
     try {
       return await Redis.lrange('storyIDs', 0, 199)
     } catch (e) {
@@ -19,39 +19,53 @@ module.exports = {
     }
   },
 
-  upvote : async function upvote (obj) {
+  upvote: async function upvote (id, user) {
     try {
-      
-      if (!(await Redis.hexists('story', obj.id))) {
-        throw new Error (`Error with this story :(`)
+      if (!(await Redis.hexists('story', id))) {
+        throw new Error(`Error with this story :(`)
       }
-      var upvotedArray = await Redis.hget('upvotedby', obj.id)
-      
-      if (upvotedArray) {      // checks if array exists
-        var temp = JSON.parse(upvotedArray)
-        if (temp.includes(obj.user)) throw `No multiple upvotes`
-        temp.push(obj.user)
-        await Redis.hset('upvotedby', obj.id, JSON.stringify(temp))
-      } else {                // creates if doesn't
-        await Redis.hset('upvotedby', obj.id, JSON.stringify([obj.user]))
+      if (!await Redis.sadd(id, user)) {
+        throw new Error(`Cannot upvote multiple times`)
       }
-      
-      return await Redis.zincrby('score', 1, obj.id)
+      return Redis.zincrby('score', 1, id)
+    } catch (e) {
+      throw e
+    }
+  },
 
+  getstorybyid: async function getstorybyid (id) {
+    try {
+      return Promise.all([
+        Redis.hget('story', id),
+        Redis.zscore('score', id)
+      ])
     } catch (e) {
       return e
     }
   },
-  
-  getstorybyid : async function getstorybyid (id) {
+
+  checkupvoted: async function checkupvoted (id, user) {
     try {
-      return Promise.all([
-        Redis.hget('story', id),
-        Redis.zscore('score', id),
-        Redis.hget('upvotedby', id)
-      ])
+      return Redis.sismember(id, user)
     } catch (e) {
       return e
+    }
+  },
+
+  unupvote: async function unupvote (id, user) {
+    try {
+      if (await Redis.sismember(id, user)) {
+        if (!(await Redis.hexists('story', id))) {
+          throw new Error(`Error with this story :(`)
+        }
+        if (!await Redis.srem(id, user)) {
+          throw new Error(`This story cannot be unupvoted`)
+        }
+        return await Redis.zincrby('score', -1, id)
+      }
+      throw new Error(`Cannot unupvote the unupvoted`)
+    } catch (e) {
+      throw e
     }
   }
   // savestoryid : async function savestoryid (id) {
@@ -63,3 +77,10 @@ module.exports = {
   //   }
   // }
 }
+
+// async function test () {
+//   var result = await Redis.sismember('jmsqi0', 'Abhishek')
+//   console.log(result, typeof result, Array.isArray(result), 'RESULT')
+// }
+
+// test()

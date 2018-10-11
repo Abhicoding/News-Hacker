@@ -3,7 +3,6 @@ const cheerio = require('cheerio')
 const controller = require('./storycontroller')
 // const model = require('../model/storymodel')
 
-
 module.exports = {
   getStoryIDs: async (req, res) => {
     // console.log(req.params)
@@ -17,8 +16,8 @@ module.exports = {
     }
     return controller.getAllStoryIDs(req, res)
   },
-  
-  getTitle : async function getTitle (req, res) {
+
+  getTitle: async function getTitle (req, res) {
     try {
       var html = await axios.get(req.body.url)
       var dom = cheerio.load(html.data)
@@ -29,10 +28,10 @@ module.exports = {
     }
   },
 
-  getStory : async function getStory (req, res) {
+  getStory: async function getStory (req, res) {
     // console.log(req.params)
     if (req.params.tabname !== 'nhstories') {
-      try{
+      try {
         var result = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${req.params.id}.json?`)
         return res.status(200).json(result.data)
       } catch (e) {
@@ -43,9 +42,9 @@ module.exports = {
     return controller.getStorybyID(req, res)
   },
 
-  getItem: async function getItem(req, res){
+  getItem: async function getItem (req, res) {
     try {
-      var result = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${req.params.id}.json?print=pretty`) 
+      var result = await axios.get(`https://hacker-news.firebaseio.com/v0/item/${req.params.id}.json?print=pretty`)
       return res.status(200).send(result.data)
     } catch (e) {
       return res.status(400).send(e.message)

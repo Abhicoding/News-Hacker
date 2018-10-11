@@ -6,6 +6,6 @@ router.get('/get/:id', controller.getStorybyID)
 
 router.post('/poststory', controller.postStories)
 router.post('/upvote', controller.upvoteStory)
-
+router.post('/unupvote', controller.unupvoteStory)
 
 module.exports = router

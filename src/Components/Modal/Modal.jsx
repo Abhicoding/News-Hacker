@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {Modal, ModalBackground, ModalCard, ModalCardHeader, 
-  ModalCardTitle, ModalCardBody, Tabs, Tab, TabLink, TabList} from 'bloomer'
+import React, { Component } from 'react'
+import { Modal, ModalBackground, ModalCard, ModalCardHeader,
+  ModalCardTitle, ModalCardBody, Tabs, Tab, TabLink, TabList } from 'bloomer'
 
 import axios from 'axios'
 
@@ -11,9 +11,9 @@ import './modal.css'
 
 export default class Login extends Component {
   constructor () {
-    super ()
+    super()
     this.state = {
-      tab : true,
+      tab: true,
       help: {
         tab: '',
         field: '',
@@ -36,10 +36,10 @@ export default class Login extends Component {
 
   sethelper (obj) {
     this.setState({
-      help: {...obj}
+      help: { ...obj }
     }, _ => setTimeout(() => this.resethelper(), 60000))
   }
-  
+
   resethelper () {
     this.setState({
       help: {
@@ -72,7 +72,7 @@ export default class Login extends Component {
     var url = `/api/user/${formtype}`
     try {
       var res = await axios.post(url, formdata)
-      if (res.status !== 200) throw new Error ('Failed! Please try again.')
+      if (res.status !== 200) throw new Error('Failed! Please try again.')
       this.props.onSignin(true, formdata.username)
       this.closeForm()
     } catch (e) {
@@ -96,10 +96,10 @@ export default class Login extends Component {
   }
 
   render () {
-    return ( 
-    <Modal className='login' isActive ={this.props.modal}>
-      <ModalBackground />
-        <ModalCard>
+    return (
+      <Modal className='login' isActive={this.props.modal}>
+        <ModalBackground />
+      <ModalCard>
           <ModalCardHeader>
             <ModalCardTitle>
               <Tabs>
@@ -116,15 +116,16 @@ export default class Login extends Component {
                   </Tab>
                 </TabList>
               </Tabs>
-            </ModalCardTitle>              
+            </ModalCardTitle>
           </ModalCardHeader>
           <ModalCardBody>
-            <Loginform {...this.state} validateForm={this.validateForm} 
+            <Loginform {...this.state} validateForm={this.validateForm}
               closeForm={this.closeForm} />
-            <Signupform {...this.state} validateForm={this.validateForm} 
-              closeForm={this.closeForm} sethelper={this.sethelper}/>
+            <Signupform {...this.state} validateForm={this.validateForm}
+              closeForm={this.closeForm} sethelper={this.sethelper} />
           </ModalCardBody>
         </ModalCard>
-      </Modal>
-    )}
+    </Modal>
+    ) 
+}
 }

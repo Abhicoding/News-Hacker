@@ -35,3 +35,11 @@ pre a {
   border-left: dashed 1px #CAC2B5;
   padding-left: 0.4vw;
 }
+
+nav.level.is-mobile {
+  margin-bottom: 4vh;
+}
+
+.media.kid {
+  margin-top: 0;
+}

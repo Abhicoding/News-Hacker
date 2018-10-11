@@ -1,10 +1,10 @@
 const redis = require('redis')
 const url = require('url')
-const {promisify} = require('util')
+const { promisify } = require('util')
 
 if (process.env.REDIS_URL) {
   const redisURL = url.parse(process.env.REDIS_URL)
-  var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true})
+  var client = redis.createClient(redisURL.port, redisURL.hostname, { no_ready_check: true })
   client.auth(redisURL.auth.split(':')[1])
 
   client.on('connect', function () {
@@ -13,8 +13,8 @@ if (process.env.REDIS_URL) {
 } else {
   client = redis.createClient()
   client.on('connect', function () {
-  console.log('connected Redis')
-})  
+    console.log('connected Redis')
+  })
 }
 
 const hset = promisify(client.hset).bind(client)
@@ -25,12 +25,16 @@ const lrange = promisify(client.lrange).bind(client)
 const lpush = promisify(client.lpush).bind(client)
 const zincrby = promisify(client.zincrby).bind(client)
 const zscore = promisify(client.zscore).bind(client)
+const smembers = promisify(client.smembers).bind(client)
+const sadd = promisify(client.sadd).bind(client)
+const srem = promisify(client.srem).bind(client)
+const sismember = promisify(client.sismember).bind(client)
 // const multi = promisify(client.multi).bind(client)
 // const exec = promisify(client.exec).bind(client)
 
 module.exports = {
-  hset, 
-  hexists, 
+  hset,
+  hexists,
   hget,
   // hgetall,
   lrange,
@@ -39,5 +43,9 @@ module.exports = {
   zscore,
   // multi,
   // exec,
+  smembers,
+  sismember,
+  sadd,
+  srem,
   client
 }

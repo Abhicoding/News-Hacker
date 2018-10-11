@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import {Field, Label, Input, Button, Control, Help} from 'bloomer'
+import React, { Component } from 'react'
+import { Field, Label, Input, Button, Control, Help } from 'bloomer'
 
 export default class Loginform extends Component {
   constructor () {
-    super ()
+    super()
     this.state = {
-      username : '',
+      username: '',
       password: ''
     }
 
@@ -20,20 +20,20 @@ export default class Loginform extends Component {
 
   resetForm () {
     this.setState({
-      username : '',
-      password1 : '',
+      username: '',
+      password1: '',
       password2: ''
     })
   }
 
   userControl (e) {
     this.setState({
-      username: e.target.value})
+      username: e.target.value })
   }
 
   passControl (e) {
     this.setState({
-      password: e.target.value})
+      password: e.target.value })
   }
 
   onClose () {
@@ -42,30 +42,30 @@ export default class Loginform extends Component {
   }
 
   onSubmit () {
-    var {username, password} = this.state
-    return this.props.validateForm({username, password}, 'login')
+    var { username, password } = this.state
+    return this.props.validateForm({ username, password }, 'login')
   }
 
   render () {
     var boolean = this.props.tab
-    var {tab, field, message} = this.props.help
+    var { tab, field, message } = this.props.help
     var showUserHelp = tab === 'login' && field === 'username'
     var showPassHelp = field === 'password'
     return (
       <Field className='loginform' isHidden={!boolean}>
         <Field>
           <Label>Username</Label>
-          <Input placeholder='Username' type="text"
-          autoComplete='on' onChange={e => this.userControl(e)} 
-          value={this.state.username}/>
+          <Input placeholder='Username' type='text'
+            autoComplete='on' onChange={e => this.userControl(e)}
+            value={this.state.username} />
           <Help isColor='danger' isHidden={!showUserHelp}>{message}</Help>
         </Field>
         <Field>
           <Label>Password</Label>
-          <Input type="password" placeholder='Password'
-            autoComplete='on' onChange={e => this.passControl(e)} 
-            value={this.state.password}/>
-            <Help isColor='danger' isHidden={!showPassHelp}>{message}</Help>
+          <Input type='password' placeholder='Password'
+            autoComplete='on' onChange={e => this.passControl(e)}
+            value={this.state.password} />
+          <Help isColor='danger' isHidden={!showPassHelp}>{message}</Help>
         </Field>
         <Field isGrouped>
           <Control>

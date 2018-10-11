@@ -1,10 +1,9 @@
 const Redis = require('./redis.js')
-const Bcrypt = require('./bcrypt.js') 
-
+const Bcrypt = require('./bcrypt.js')
 
 module.exports = {
 
-  signup : async function signup (obj) {
+  signup: async function signup (obj) {
     try {
       if (obj.username.length < 6) throw new Error(`Username too small`)
       if (obj.password.length < 6) throw new Error(`Password too small`)
@@ -18,7 +17,7 @@ module.exports = {
     }
   },
 
-  login : async function login (obj) {
+  login: async function login (obj) {
     try {
       var validuser = await Redis.hexists('user', obj.username)
       if (validuser) {

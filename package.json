@@ -29,7 +29,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "dev-server": "nodemon index.js",
-    "con" : "concurrently \"npm run build\" \"node index.js\""
+    "con": "concurrently \"npm run build\" \"node index.js\"",
+    "dev-con": "concurrently \"npm run build\" \"npm run dev-server\""
   },
   "devDependencies": {
     "morgan": "^1.9.1",

@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {Container, Field, Label, Control, Input, Button, LevelItem, Level, Help} from 'bloomer'
+import React, { Component } from 'react'
+import { Container, Field, Label, Control, Input, Button, LevelItem, Level, Help } from 'bloomer'
 import axios from 'axios'
 
 import './createpost.css'
@@ -8,7 +8,7 @@ export default class Createpost extends Component {
   constructor () {
     super()
     this.state = {
-      url : '',
+      url: '',
       title: '',
       loading1: false,
       loading2: false,
@@ -58,33 +58,33 @@ export default class Createpost extends Component {
   }
 
   toggleloading1 () {
-    return this.setState({loading1 : !this.state.loading1})
+    return this.setState({ loading1: !this.state.loading1 })
   }
 
   toggleloading2 () {
-    return this.setState({loading2 : !this.state.loading2})
+    return this.setState({ loading2: !this.state.loading2 })
   }
 
   async getTitle () {
     this.toggleloading1()
     try {
-      var res = await axios.post('/api/ext/title', {url: this.state.url})
+      var res = await axios.post('/api/ext/title', { url: this.state.url })
     } catch (e) {
       this.toggleloading1()
       this.setMessage('Failed to get title. Try your own.')
       return e
-    }    
+    }
     this.toggleloading1()
     if (res.status === 200) {
       this.setState({
         title: res.data
-      }) 
+      })
     }
   }
 
   async postStory () {
     this.toggleloading2()
-    var {title, url} = this.state
+    var { title, url } = this.state
     var story = {
       title,
       url,
@@ -109,42 +109,42 @@ export default class Createpost extends Component {
   }
 
   render () {
-    var {message} = this.state
-    return(
-    <Container className='createpost'>
-      <Field>
-      <Label>URL</Label>
-        <Level>
-          <LevelItem>
-            <Input type="text" placeholder='Text Input' 
-              onChange={(e) => this.setTitle(e)} value={this.state.url}/>
-          </LevelItem>
-        </Level>
-      </Field>
-      <Field>
-        <Control>
-          <Button isColor='primary' onClick={this.getTitle} 
-            isLoading={this.state.loading1}>Get title</Button>
-        </Control>
-      </Field>
-      <Help isColor='danger' isHidden={!Boolean(message)}>{message}</Help>
-      <Field>
-        <Label>Post Title</Label>
-        <Control>
-          <Input type="text" placeholder='Suggested title will appear here' 
-            defaultValue={this.state.title}/>
-        </Control>
-      </Field>
-      <Field isGrouped>
-      <Control>
-        <Button isColor='primary' isLoading={this.state.loading2} 
-          onClick={this.postStory}>Submit</Button>
-      </Control>
-      <Control>
-        <Button href={window.location.origin + '/nhstories'} onClick={this.props.history.goBack}>Cancel</Button>
-      </Control>
-      </Field>
-    </Container>
+    var { message } = this.state
+    return (
+      <Container className='createpost'>
+        <Field>
+          <Label>URL</Label>
+          <Level>
+            <LevelItem>
+              <Input type='text' placeholder='Text Input'
+                onChange={(e) => this.setTitle(e)} value={this.state.url} />
+            </LevelItem>
+          </Level>
+        </Field>
+        <Field>
+          <Control>
+            <Button isColor='primary' onClick={this.getTitle}
+              isLoading={this.state.loading1}>Get title</Button>
+          </Control>
+        </Field>
+        <Help isColor='danger' isHidden={!message}>{message}</Help>
+        <Field>
+          <Label>Post Title</Label>
+          <Control>
+            <Input type='text' placeholder='Suggested title will appear here'
+              defaultValue={this.state.title} />
+          </Control>
+        </Field>
+        <Field isGrouped>
+          <Control>
+            <Button isColor='primary' isLoading={this.state.loading2}
+              onClick={this.postStory}>Submit</Button>
+          </Control>
+          <Control>
+            <Button href={window.location.origin + '/nhstories'} onClick={this.props.history.goBack}>Cancel</Button>
+          </Control>
+        </Field>
+      </Container>
     )
   }
 }

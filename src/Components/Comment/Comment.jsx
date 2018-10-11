@@ -1,14 +1,14 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ta from 'time-ago'
 
-import {Media, MediaContent, MediaLeft, LevelItem, Content, Level, LevelLeft} from 'bloomer'
+import { Media, MediaContent, MediaLeft, LevelItem, Content, Level, LevelLeft } from 'bloomer'
 import './comment.css'
 
 export default class Comment extends Component {
   constructor () {
-    super ()
+    super()
     this.state = {
-      kids : []
+      kids: []
     }
   }
   componentWillMount () {
@@ -25,29 +25,28 @@ export default class Comment extends Component {
   }
 
   render () {
-    var {by, time, text, kids} = this.props
+    var { by, time, text, kids, iskid } = this.props
     var item
     if (kids) {
       item = this.state.kids.filter(y => y.by !== undefined && y.text)
-      .map(x => <Comment key={x.id} getChildren = {this.props.getChildren} {...x} />)
+        .map(x => <Comment key={x.id} getChildren= {this.props.getChildren} {...x} iskid />)
     }
-    return (<Media>
-      <MediaLeft>
-      </MediaLeft>
-      <MediaContent className="comment">
-          <Level isMobile>
-              <LevelLeft>
-                <LevelItem className='by' href='#'>
-                  <p>by<strong>{` ${by}`}</strong></p>
-                </LevelItem>
-                <LevelItem className='timeago' href='#'>
-                  <i>{ta.ago(new Date() - time)}</i>
-                </LevelItem>
-              </LevelLeft>
-          </Level>
-          <Content className='text'>
-              <pre dangerouslySetInnerHTML={{__html: text}} />
-          </Content>
+    return (<Media className={`${iskid ? 'kid' : ''}`}>
+      <MediaLeft />
+      <MediaContent className='comment'>
+        <Level isMobile>
+          <LevelLeft>
+            <LevelItem className='by' href='#'>
+              <p>by<strong>{` ${by}`}</strong></p>
+            </LevelItem>
+            <LevelItem className='timeago' href='#'>
+              <i>{ta.ago(new Date() - time)}</i>
+            </LevelItem>
+          </LevelLeft>
+        </Level>
+        <Content className='text'>
+          <pre dangerouslySetInnerHTML={{ __html: text }} />
+        </Content>
         {item}
       </MediaContent>
     </Media>)

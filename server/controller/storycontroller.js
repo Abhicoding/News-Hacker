@@ -1,5 +1,5 @@
 const model = require('../model/storymodel')
-const  uniqid = require('uniqid')
+const uniqid = require('uniqid')
 
 module.exports = {
   getAllStoryIDs: async function getAllStoryIDs (req, res) {
@@ -8,7 +8,7 @@ module.exports = {
     return res.status(400).send('failed')
   },
 
-  postStories : async function postStories (req, res) {
+  postStories: async function postStories (req, res) {
     if (req.session.username) {
       try {
         var data = req.body
@@ -17,19 +17,21 @@ module.exports = {
         data.score = 0
         var status = await model.savestory(data)
         if (status) return res.status(201).send('success')
-      } catch (e){
+      } catch (e) {
         return res.status(400).send(e.message)
       }
     }
     return res.status(400).send('failed')
   },
 
-  upvoteStory : async function upvoteStory (req, res) {
+  upvoteStory: async function upvoteStory (req, res) {
     if (req.session.username) {
-      try{
-        var result = model.upvote(req.body)
+      try {
+        var result = await model.upvote(req.body.id, req.session.username)
+        // console.log(result, 'UPVOTE RESULT')
         if (typeof Number(result) === 'number') {
-          return res.status(200).send('success')
+          return res.status(200)
+            .json({ id: req.body.id, score: result, didupvote: true })
         }
       } catch (e) {
         return res.status(400).send(e.message)
@@ -38,22 +40,38 @@ module.exports = {
     return res.status(400).send('failed')
   },
 
+  unupvoteStory: async function unupvoteStory (req, res) {
+    // console.log(req.body.id, req.session.username, 'INSIDE UNUPVOTE')
+    try {
+      var user = req.session.username
+      if (user) {
+        var result = await model.unupvote(req.body.id, user)
+        if (typeof Number(result) === 'number') {
+          return res.status(200)
+            .json({ id: req.body.id, score: Number(result), didupvote: false })
+        }
+      }
+      return res.status(400).send('failed')
+    } catch (e) {
+      return res.status(400).send(e.message)
+    }
+  },
+
   getStorybyID: async function getStorybyID (req, res) {
     try {
-      var data = await model.getstorybyid(req.params.id)
+      var id = req.params.id
+      var data = await model.getstorybyid(id)
       var story = JSON.parse(data[0])
       if (story === null) throw new Error(`No such story`)
       story.time = Date.now() - story.time
       if (req.session.username) {
-        data[2] = JSON.parse(data[2])
-        var didupvote = Array.isArray(data[2]) 
-          ? data[2].includes(req.session.username)
-          : false
-        story.didupvote = didupvote
+        var user = req.session.username
+        var didupvote = await model.checkupvoted(id, user)
+        story.didupvote = !!didupvote
       }
       story.score = data[1] === null ? 0 : data[1]
     } catch (e) {
-      return res.status(400).json(e.message)  
+      return res.status(400).json(e.message)
     }
     return res.status(200).json(story)
   }
